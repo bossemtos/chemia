@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super ultra laboratorium pH 2000</title>
+    <title>UWI - Uniwersalny Wirtualny Indykator</title>
+    <link rel="icon" type="image/x-icon" href="logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
@@ -30,29 +31,22 @@
             --input-bg: rgba(255, 255, 255, 0.08);
             --input-focus-bg: rgba(255, 255, 255, 0.1);
             --select-option-bg: #ffffff;
-
             --font-primary: 'Titillium Web', sans-serif;
             --font-display: 'Orbitron', sans-serif;
-
             --animation-speed-fast: 0.25s;
             --animation-speed-medium: 0.5s;
             --animation-speed-slow: 0.8s;
-
             --cursor-pointer: pointer;
             --cursor-default: default;
         }
 
         @keyframes backgroundGradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        @keyframes stars { 0% { background-position: 0 0; } 100% { background-position: -10000px 5000px; } }
-        @keyframes floatCosmic { 0%, 100% { transform: translateY(0) rotate(-3deg) scale(1); } 50% { transform: translateY(-12px) rotate(3deg) scale(1.05); } }
-        @keyframes pulseNeon { 0% { box-shadow: 0 0 5px var(--secondary-glow), 0 0 10px var(--secondary-glow), inset 0 0 3px rgba(0, 229, 255, 0.5); } 50% { box-shadow: 0 0 15px var(--secondary-glow), 0 0 30px var(--secondary-glow), inset 0 0 5px rgba(0, 229, 255, 0.7); transform: scale(1.03); } 100% { box-shadow: 0 0 5px var(--secondary-glow), 0 0 10px var(--secondary-glow), inset 0 0 3px rgba(0, 229, 255, 0.5); } }
         @keyframes fadeInSlideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes scaleInGlow { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-        @keyframes shakeError { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-6px); } 20%, 40%, 60%, 80% { transform: translateX(6px); } }
-        @keyframes borderImageAnimation { 0% { border-image-source: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow)); } 50% { border-image-source: linear-gradient(90deg, var(--secondary-glow), var(--primary-glow)); } 100% { border-image-source: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow)); } }
         @keyframes preloaderSpin { to { transform: rotate(360deg); } }
 
-        body { font-family: var(--font-primary); background-color: var(--bg-color-1); background-image: linear-gradient(45deg, rgba(15, 12, 41, 0) 0%, rgba(48, 43, 99, 0.3) 50%, rgba(36, 36, 62, 0) 100%), radial-gradient(ellipse at top left, rgba(0, 229, 255, 0.1) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(138, 43, 226, 0.1) 0%, transparent 50%), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4" viewBox="0 0 4 4"><path fill="%23FFFFFF" fill-opacity="0.05" d="M1 3h1v1H1V3zm2-2h1v1H3V1z"></path></svg>'), linear-gradient(135deg, var(--bg-color-1) 0%, var(--bg-color-2) 50%, var(--bg-color-3) 100%); background-size: auto, auto, auto, auto, 200% 200%; background-attachment: fixed; animation: backgroundGradientShift 20s ease infinite; margin: 0; padding: 40px; display: flex; align-items: center; justify-content: center; min-height: 100vh; flex-direction: column; color: var(--text-color); line-height: 1.7; overflow-x: hidden; cursor: var(--cursor-default); }
+        body { font-family: var(--font-primary); background-color: var(--bg-color-1); background-image: linear-gradient(135deg, var(--bg-color-1) 0%, var(--bg-color-2) 50%, var(--bg-color-3) 100%); background-size: 200% 200%; background-attachment: fixed; animation: backgroundGradientShift 20s ease infinite; margin: 0; padding: 40px; display: flex; align-items: center; justify-content: center; min-height: 100vh; flex-direction: column; color: var(--text-color); line-height: 1.7; overflow-x: hidden; cursor: var(--cursor-default); }
         #preloader { position: fixed; inset: 0; background-color: var(--bg-color-1); z-index: 9999; display: flex; justify-content: center; align-items: center; opacity: 1; visibility: visible; transition: opacity var(--animation-speed-slow) ease, visibility var(--animation-speed-slow) ease; }
         #preloader .spinner { width: 60px; height: 60px; border: 5px solid rgba(255, 255, 255, 0.2); border-top-color: var(--secondary-glow); border-radius: 50%; animation: preloaderSpin 1s linear infinite; }
         body.loaded #preloader { opacity: 0; visibility: hidden; }
@@ -60,6 +54,8 @@
         .container { background: var(--container-bg); backdrop-filter: blur(10px) saturate(180%); padding: 50px 60px; border-radius: 24px; box-shadow: 0 0 30px var(--shadow-color-glow), 0 0 60px rgba(0, 229, 255, 0.1), inset 0 0 0 1px var(--container-border); text-align: center; display: flex; flex-direction: column; align-items: center; width: 95%; max-width: 950px; border: 1px solid var(--container-border); animation: scaleInGlow 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0.5s forwards; opacity: 0; }
         h1 { font-family: var(--font-display); color: #fff; margin-bottom: 45px; font-weight: 700; font-size: 3em; position: relative; letter-spacing: 2px; text-shadow: 0 0 10px var(--primary-glow), 0 0 20px var(--secondary-glow); }
         h1 i { margin-right: 18px; color: var(--secondary-glow); animation: floatCosmic 4s ease-in-out infinite; display: inline-block; text-shadow: 0 0 15px var(--secondary-glow); }
+        h1 > i.fa-prescription-bottle { margin-left: 18px; }
+        
         .controls { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; margin-bottom: 45px; gap: 40px; width: 100%; }
         .control-group { display: flex; flex-direction: column; align-items: flex-start; min-width: 280px; flex-grow: 1; transition: transform var(--animation-speed-medium) cubic-bezier(0.25, 0.46, 0.45, 0.94); position: relative; }
         .control-group::after { content: ''; position: absolute; bottom: -8px; left: 0; height: 2px; width: 0; background: linear-gradient(90deg, var(--secondary-glow), var(--primary-glow)); transition: width var(--animation-speed-medium) ease-out; }
@@ -68,67 +64,75 @@
         label { margin-bottom: 12px; color: var(--label-color); font-size: 1em; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color var(--animation-speed-fast) ease; }
         .control-group:hover label { color: #fff; }
 
-        select, input[type="text"], input[type="number"], input[type="color"] { padding: 15px 22px; border: 1px solid var(--border-color); border-radius: 12px; width: 100%; font-size: 1.05em; font-family: var(--font-primary); transition: all var(--animation-speed-medium) ease; box-sizing: border-box; background-color: var(--input-bg); color: var(--text-color); box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
-        select { color: var(--text-dark); }
-        select::placeholder, input::placeholder { color: rgba(224, 224, 224, 0.5); }
-        select:focus, input:focus { border-color: var(--secondary-glow); box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.2), inset 0 2px 4px rgba(0,0,0,0.3); outline: none; background-color: var(--input-focus-bg); transform: scale(1.02); color: #fff; }
-        select { cursor: var(--cursor-pointer); appearance: none; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="%2300e5ff" class="bi bi-caret-down-fill" viewBox="0 0 16 16"><path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>'); background-repeat: no-repeat; background-position: right 22px center; background-size: 18px 18px; padding-right: 55px; transition: all var(--animation-speed-medium) ease, background-position var(--animation-speed-fast) ease; }
-        select:hover { border-color: var(--secondary-glow); background-position: right 19px center; }
-        select:focus { color: #fff; background-color: var(--input-focus-bg); }
-        select option { background-color: var(--select-option-bg); color: var(--text-dark); }
+        input[type="text"], input[type="number"], input[type="color"] { padding: 15px 22px; border: 1px solid var(--border-color); border-radius: 12px; width: 100%; font-size: 1.05em; font-family: var(--font-primary); transition: all var(--animation-speed-medium) ease; box-sizing: border-box; background-color: var(--input-bg); color: var(--text-color); box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
+        input::placeholder { color: rgba(224, 224, 224, 0.5); }
+        input:focus { border-color: var(--secondary-glow); box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.2), inset 0 2px 4px rgba(0,0,0,0.3); outline: none; background-color: var(--input-focus-bg); color: #fff; transform: scale(1.02); }
+
+        /* STYLE DLA DROPDOWN */
+        .custom-select-container { position: relative; width: 100%; }
+        .custom-select { position: relative; }
+        .select-selected { background-color: var(--input-bg); color: #fff; padding: 15px 22px; border: 1px solid var(--border-color); border-radius: 12px; cursor: var(--cursor-pointer); transition: all var(--animation-speed-medium) ease; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="%2300e5ff" class="bi bi-caret-down-fill" viewBox="0 0 16 16"><path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>'); background-repeat: no-repeat; background-position: right 22px center; background-size: 18px 18px; padding-right: 55px; }
+        .select-selected.select-arrow-active { border-radius: 12px 12px 0 0; }
+        .select-items { position: absolute; background-color: var(--bg-color-3); top: 100%; left: 0; right: 0; z-index: 99; border: 1px solid var(--secondary-glow); border-top: none; border-radius: 0 0 12px 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .select-hide { display: none; }
+        .options-container { max-height: 200px; overflow-y: auto; }
+        .options-container div { color: var(--text-color); padding: 12px 22px; cursor: var(--cursor-pointer); transition: background-color var(--animation-speed-fast) ease; border-top: 1px solid var(--border-color); }
+        .options-container div:first-child { border-top: none; }
+        .options-container div:hover { background-color: var(--primary-glow); color: #fff; }
 
         .display-area { display: flex; flex-direction: column; align-items: center; margin-top: 40px; margin-bottom: 50px; width: 100%; background: rgba(0,0,0,0.1); padding: 40px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3); transition: box-shadow var(--animation-speed-medium) ease; }
         .display-area:hover { box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.4), 0 0 15px var(--shadow-color-glow); }
-        .circle-container { width: 170px; height: 170px; margin-bottom: 35px; position: relative; filter: drop-shadow(0 10px 25px rgba(0,0,0,0.2)); transition: transform var(--animation-speed-medium) cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .circle-container { width: 170px; height: 170px; margin-bottom: 25px; position: relative; filter: drop-shadow(0 10px 25px rgba(0,0,0,0.2)); transition: transform var(--animation-speed-medium) cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .circle-container:hover { transform: scale(1.08) rotate(5deg); }
         .circle { width: 150px; height: 150px; border-radius: 50%; background-color: rgba(255,255,255,0.1); border: 7px solid var(--border-color); transition: background-color 0.7s cubic-bezier(0.68, -0.6, 0.27, 1.55), border-color 0.7s ease; display: flex; justify-content: center; align-items: center; box-shadow: inset 0 0 30px rgba(0,0,0,0.15); position: relative; z-index: 1; overflow: hidden; }
         .circle::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 0; background: inherit; transition: height 0.7s cubic-bezier(0.68, -0.6, 0.27, 1.55); z-index: -1; filter: brightness(1.1); }
         .circle.colored { border-color: transparent; animation: pulseNeon 2s ease-in-out infinite alternate; }
         .circle.colored::after { height: 100%; }
-        #info-display { font-weight: 600; font-size: 1.3em; color: var(--text-color); text-align: center; min-height: 60px; margin-top: 20px; }
+        
+        #info-display { font-weight: 600; font-size: 1.3em; color: var(--text-color); text-align: center; min-height: 60px; margin-top: 10px; }
         #color-name { cursor: help; transition: color var(--animation-speed-fast) ease; }
         #color-name:hover { color: #fff; text-shadow: 0 0 8px var(--secondary-glow); }
         #color-name, #solution-nature { display: block; margin-top: 12px; opacity: 0; transform: translateY(20px); animation: fadeInSlideUp var(--animation-speed-slow) cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
-        #color-name { animation-delay: 0.2s; }
-        #solution-nature { animation-delay: 0.3s; }
+        #color-name { animation-delay: 0.2s; } #solution-nature { animation-delay: 0.3s; }
         #solution-nature span { font-family: var(--font-display); font-weight: 500; font-size: 0.9em; background-color: rgba(143, 148, 251, 0.2); color: var(--secondary-glow); padding: 5px 12px; border-radius: 20px; margin-left: 12px; display: inline-block; transition: all var(--animation-speed-medium) ease; box-shadow: 0 0 5px rgba(143, 148, 251, 0.3); border: 1px solid rgba(143, 148, 251, 0.5); }
         #solution-nature:hover span { background-color: var(--secondary-glow); color: var(--bg-color-1); box-shadow: 0 0 10px var(--secondary-glow); }
+        
+        #ph-slider-container { width: 80%; max-width: 400px; margin-top: 25px; text-align: center; opacity: 0; transition: opacity var(--animation-speed-medium) ease; pointer-events: none; }
+        #ph-slider-container.visible { opacity: 1; pointer-events: auto; animation: fadeIn var(--animation-speed-slow) ease; }
+        #ph-slider-container label { font-family: var(--font-display); font-size: 1em; color: var(--label-color); letter-spacing: 1px; }
+        #slider-ph-value { font-weight: 700; color: #fff; text-shadow: 0 0 5px var(--secondary-glow); margin-left: 8px; }
+        
+        input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 8px; background: var(--input-bg); border-radius: 10px; cursor: pointer; margin-top: 15px; border: 1px solid var(--border-color); box-shadow: inset 0 1px 3px rgba(0,0,0,0.4); outline: none; transition: box-shadow var(--animation-speed-medium) ease; }
+        input[type="range"]:hover { box-shadow: inset 0 1px 3px rgba(0,0,0,0.4), 0 0 8px var(--secondary-glow); }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; background: var(--secondary-glow); border-radius: 50%; border: 3px solid var(--bg-color-3); cursor: pointer; box-shadow: 0 0 10px var(--secondary-glow), 0 0 20px rgba(0, 229, 255, 0.5); transition: all var(--animation-speed-medium) ease; margin-top: -9px; }
+        input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); box-shadow: 0 0 15px var(--secondary-glow), 0 0 30px rgba(0, 229, 255, 0.7); }
+        input[type="range"]::-moz-range-thumb { width: 24px; height: 24px; background: var(--secondary-glow); border-radius: 50%; border: 3px solid var(--bg-color-3); cursor: pointer; box-shadow: 0 0 10px var(--secondary-glow), 0 0 20px rgba(0, 229, 255, 0.5); transition: all var(--animation-speed-medium) ease; }
+        input[type="range"]:active::-moz-range-thumb { transform: scale(1.15); box-shadow: 0 0 15px var(--secondary-glow), 0 0 30px rgba(0, 229, 255, 0.7); }
+        
         .form-container { margin-top: 50px; padding: 40px 45px; border: none; border-radius: 20px; width: 100%; background: rgba(0,0,0,0.2); box-shadow: 0 10px 35px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
         .form-container h2 { font-size: 1.8em; margin-top: 0; margin-bottom: 35px; color: #fff; border-bottom: 4px solid; border-image-slice: 1; border-image-source: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow)); padding-bottom: 15px; text-align: left; font-weight: 700; animation: borderImageAnimation 4s linear infinite alternate; text-shadow: 0 0 8px var(--primary-glow); }
         .form-container h2 i { margin-right: 15px; color: var(--secondary-glow); transition: transform var(--animation-speed-medium) ease; }
         .form-container h2:hover i { transform: rotate(-20deg) scale(1.15); filter: drop-shadow(0 0 5px var(--secondary-glow)); }
-        .form-container form { display: flex; flex-direction: column; align-items: stretch; margin-bottom: 45px; position: relative; }
-        #indicator-ranges-container { margin-top: 30px; padding-left: 0; border-left: none; }
+        .form-container form { display: flex; flex-direction: column; align-items: stretch; margin-bottom: 25px; position: relative; }
         .indicator-range-group { display: grid; grid-template-columns: 1fr 1fr; grid-template-areas: "phmin phmax" "name name" "color color" "remove remove"; gap: 20px 25px; margin-bottom: 30px; padding: 30px; border: 1px solid var(--border-color); border-radius: 12px; background-color: rgba(255,255,255,0.05); position: relative; transition: all var(--animation-speed-medium) cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow var(--animation-speed-fast) ease; animation: scaleInGlow 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .indicator-range-group:hover { border-color: var(--secondary-glow); box-shadow: 0 8px 25px rgba(0, 229, 255, 0.15); transform: translateY(-4px); }
-        .indicator-range-group.removing { opacity: 0; transform: scale(0.9) translateX(30px); margin-bottom: -30px; padding: 0; height: 0; overflow: hidden; border-width: 0; z-index: -1; transition: all var(--animation-speed-medium) ease-out; }
-        .range-control-group:nth-child(1) { grid-area: phmin; } .range-control-group:nth-child(2) { grid-area: phmax; } .range-control-group:nth-child(3) { grid-area: name; } .range-control-group:nth-child(4) { grid-area: color; }
         .remove-range-btn-container { grid-area: remove; justify-self: end; margin-top: 10px;}
-        .range-control-group { display: flex; flex-direction: column; }
         .add-range-btn, .remove-range-btn { padding: 12px 20px; font-size: 1em; border: none; border-radius: 10px; cursor: var(--cursor-pointer); transition: all var(--animation-speed-medium) ease; color: white; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
         .add-range-btn { background: linear-gradient(45deg, var(--accent-glow), #81c784); margin-top: 20px; box-shadow: 0 4px 10px rgba(86, 171, 47, 0.4); }
         .add-range-btn:hover { background: linear-gradient(45deg, #81c784, var(--accent-glow)); transform: translateY(-4px) scale(1.05); box-shadow: 0 7px 15px rgba(86, 171, 47, 0.5); }
-        .add-range-btn:active { transform: translateY(-1px) scale(0.97); box-shadow: 0 2px 6px rgba(86, 171, 47, 0.3); }
         .remove-range-btn { background-color: rgba(255,255,255, 0.1); color: var(--label-color); padding: 8px 16px; font-size: 0.9em; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid var(--border-color); }
         .remove-range-btn:hover { background-color: var(--error-color); color: white; transform: scale(1.08) rotate(-5deg); box-shadow: 0 4px 10px rgba(229, 82, 82, 0.4); border-color: transparent; }
-        .remove-range-btn:active { transform: scale(0.96) rotate(0deg); }
-        .color-input-group { display: flex; align-items: center; gap: 15px; }
-        input[type="color"] { padding: 0; height: 48px; min-width: 48px; border: 2px solid var(--border-color); cursor: var(--cursor-pointer); border-radius: 10px; transition: transform var(--animation-speed-medium) ease, box-shadow var(--animation-speed-medium) ease; box-shadow: 0 3px 8px rgba(0,0,0,0.15); }
-        input[type="color"]:hover { transform: scale(1.15); box-shadow: 0 6px 12px rgba(0,0,0,0.2); }
-        .color-input-group input[type="text"] { flex-grow: 1; }
         .form-container form button[type="submit"] { padding: 16px 40px; background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow)); color: white; border: none; border-radius: 12px; cursor: var(--cursor-pointer); font-size: 1.2em; font-weight: 700; transition: all var(--animation-speed-medium) cubic-bezier(0.175, 0.885, 0.32, 1.275); width: auto; align-self: flex-end; margin-top: 30px; box-shadow: 0 6px 20px var(--shadow-color-glow); display: inline-flex; align-items: center; gap: 12px; text-transform: uppercase; letter-spacing: 1px; }
         .form-container form button[type="submit"]:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 10px 30px var(--shadow-color-glow); background: linear-gradient(45deg, var(--secondary-glow), var(--primary-glow)); }
-        .form-container form button[type="submit"]:active { transform: translateY(-2px) scale(0.96); box-shadow: 0 4px 15px var(--shadow-color-glow); }
-        .message { margin-top: 30px; font-size: 1.1em; font-weight: 600; min-height: 1.6em; padding: 16px 22px; border-radius: 12px; text-align: left; display: flex; align-items: center; gap: 15px; opacity: 0; animation: fadeInSlideUp var(--animation-speed-slow) ease-out forwards; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-width: 2px; border-style: solid; }
-        .message.error { animation: shakeError 0.6s ease-in-out forwards, fadeInSlideUp var(--animation-speed-slow) ease-out forwards; }
-        .error { color: #fff; background-color: rgba(244, 67, 54, 0.8); border-color: var(--error-color); text-shadow: 1px 1px 1px rgba(0,0,0,0.3); }
-        .success { color: #fff; background-color: rgba(76, 175, 80, 0.8); border-color: var(--success-color); text-shadow: 1px 1px 1px rgba(0,0,0,0.3); }
-        .warning { color: #333; background-color: rgba(255, 238, 88, 0.9); border-color: var(--warning-color); }
-        .message i { font-size: 1.3em; }
-        input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { appearance: none; margin: 0; }
-        input[type="number"] { appearance: textfield; }
+        
+        .message { margin-top: 30px; font-size: 1.1em; font-weight: 600; min-height: 1.6em; padding: 16px 22px; border-radius: 12px; text-align: left; display: flex; align-items: center; gap: 15px; opacity: 0; animation: fadeInSlideUp var(--animation-speed-slow) ease-out forwards; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-width: 2px; border-style: solid; display: none; }
+        .message.visible { display: flex; }
+        
+        #reset-data-container { margin-top: 20px; width: 100%; text-align: right; }
+        #reset-data-btn { background-color: rgba(255, 82, 82, 0.2); border: 1px solid var(--error-color); color: var(--error-color); padding: 8px 15px; border-radius: 8px; cursor: pointer; transition: all var(--animation-speed-medium) ease; font-weight: 600; }
+        #reset-data-btn:hover { background-color: var(--error-color); color: #fff; box-shadow: 0 0 10px rgba(255, 82, 82, 0.5); }
+        
         .copyright { text-align: center; margin-top: 50px; font-size: 0.9em; color: rgba(255, 255, 255, 0.6); padding-bottom: 20px; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); opacity: 0; animation: fadeInSlideUp 1.2s ease-out 1.5s forwards; }
-        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; animation-delay: 0ms !important; transition-delay: 0ms !important; } body, h1 i, .circle.colored, .form-container h2 { animation: none; } }
     </style>
     <script>
         const defaultBarwniki = [ { id: 1, nazwa: 'Fenoloftaleina' }, { id: 2, nazwa: 'Oranż metylowy' }, { id: 3, nazwa: 'Lakmus (papierek)' }, { id: 4, nazwa: 'Błękit tymolowy' }, { id: 5, nazwa: 'Czerwień metylowa' }, { id: 6, nazwa: 'Błękit bromotymolowy' }, { id: 7, nazwa: 'Czerwień fenolowa' }, { id: 8, nazwa: 'Zieleń bromokrezolowa' }, { id: 9, nazwa: 'Purpura bromokrezolowa' }, { id: 10, nazwa: 'Fiolet metylowy' }, { id: 11, nazwa: 'Zieleń malachitowa' }, { id: 12, nazwa: 'Tymoloftaleina' }, { id: 13, nazwa: 'Alizaryna żółta R' }, { id: 14, nazwa: 'Indygokarmin' }, { id: 15, nazwa: 'Błękit ksylenolowy' }, { id: 16, nazwa: 'Czerwień krezolowa' }, { id: 17, nazwa: 'Błękit metylenowy' }, { id: 18, nazwa: 'Żółcień metanilowa' }, { id: 19, nazwa: 'Oranż ksylenolowy' }, { id: 20, nazwa: 'Fiolet krystaliczny' }, { id: 21, nazwa: 'Czerwień Kongo' }, { id: 22, nazwa: 'Fluoresceina' }, { id: 23, nazwa: 'Eozyna Y' }, { id: 24, nazwa: 'Metakrezol purpurowy' }, { id: 25, nazwa: 'Błękit bromofenolowy' }, { id: 26, nazwa: 'Czerwień alizarynowa S' }, { id: 27, nazwa: 'Tropeolina OO' }, { id: 28, nazwa: 'Brilliant Yellow' }, { id: 29, nazwa: 'Wyciąg z czerwonej kapusty' }, { id: 30, nazwa: 'Ekstrakt z kurkumy' }, { id: 31, nazwa: 'Sok z buraków' }, { id: 32, nazwa: 'Napar z czarnej herbaty' }, { id: 33, nazwa: 'Wyciąg z płatków róży' }, { id: 34, nazwa: 'Ekstrakt z hibiskusa' }, { id: 35, nazwa: 'Uniwersalny wskaźnik (roztwór)' }, { id: 36, nazwa: 'Oranż IV (Tropeolina 00)' }, { id: 37, nazwa: 'Błękit Nilu A' }, { id: 38, nazwa: 'Tionina' }, { id: 39, nazwa: 'Rezazuryna' }, { id: 40, nazwa: 'Lakmoid' }, { id: 41, nazwa: 'Orceina' }, { id: 42, nazwa: 'Neutral Red' }, { id: 43, nazwa: 'Ponceau S' }, { id: 44, nazwa: 'Pinakryptol żółty' }, { id: 45, nazwa: 'Chryzoidyna G' }, { id: 46, nazwa: 'Azolitmina' }, { id: 47, nazwa: 'Nitrazyna żółta' }, { id: 48, nazwa: 'Patent Blue V' }, { id: 49, nazwa: 'Erytrolitmina' }, { id: 50, nazwa: 'Magnezon I' } ];
@@ -137,59 +141,180 @@
 
         let barwniki = []; let roztwory = []; let kolory = [];
 
-        function initializeData() { barwniki = JSON.parse(JSON.stringify(defaultBarwniki)); roztwory = JSON.parse(JSON.stringify(defaultRoztwory)); kolory = JSON.parse(JSON.stringify(defaultKolory)); }
+        function loadData() {
+            barwniki = JSON.parse(JSON.stringify(defaultBarwniki));
+            roztwory = JSON.parse(JSON.stringify(defaultRoztwory));
+            kolory = JSON.parse(JSON.stringify(defaultKolory));
+            const savedRoztwory = localStorage.getItem('uwi_custom_roztwory');
+            const savedBarwniki = localStorage.getItem('uwi_custom_barwniki');
+            const savedKolory = localStorage.getItem('uwi_custom_kolory');
+            if (savedRoztwory) roztwory = roztwory.concat(JSON.parse(savedRoztwory));
+            if (savedBarwniki && savedKolory) {
+                barwniki = barwniki.concat(JSON.parse(savedBarwniki));
+                kolory = kolory.concat(JSON.parse(savedKolory));
+            }
+        }
+
         function getNextBarwnikId() { return barwniki.length > 0 ? Math.max(0, ...barwniki.map(b => b.id)) + 1 : 1; }
         function getNextRoztworId() { return roztwory.length > 0 ? Math.max(0, ...roztwory.map(r => r.id)) + 1 : 1; }
+        
+        function showMessage(elementId, message, isSuccess, isWarning = false) { const messageEl = document.getElementById(elementId); messageEl.classList.add('visible'); const existingIcon = messageEl.querySelector('i'); if (existingIcon) existingIcon.remove(); messageEl.textContent = ''; let iconClass = ''; let className = 'message visible '; if (isWarning) { className += 'warning'; iconClass = 'fas fa-exclamation-triangle'; } else if (isSuccess) { className += 'success'; iconClass = 'fas fa-check-circle'; } else { className += 'error'; iconClass = 'fas fa-times-circle'; } messageEl.className = className; const icon = document.createElement('i'); icon.className = iconClass; messageEl.prepend(icon); messageEl.append(document.createTextNode(" " + message)); messageEl.style.animation = 'none'; void messageEl.offsetHeight; messageEl.style.animation = null; if (!isSuccess && !isWarning) { messageEl.style.animationName = 'shakeError, fadeInSlideUp'; } else { messageEl.style.animationName = 'fadeInSlideUp'; } setTimeout(() => { if (messageEl.textContent.trim().endsWith(message.trim())) { messageEl.style.opacity = '0'; setTimeout(() => { messageEl.className = 'message'; messageEl.style.opacity = ''; }, 500); } }, 5000); }
+        
+        function updateDisplay() {
+            const barwnikSelect = document.querySelector('#barwnik-select .select-selected');
+            const barwnikIdValue = barwnikSelect.dataset.value;
+            const phSlider = document.getElementById('ph-slider');
+            const roztworPhValue = phSlider.value;
+            const circle = document.querySelector('.circle');
+            const colorNameEl = document.getElementById('color-name');
+            const solutionNatureEl = document.getElementById('solution-nature');
+            const phSliderContainer = document.getElementById('ph-slider-container');
+            [colorNameEl, solutionNatureEl].forEach(el => { el.style.animation = 'none'; el.offsetHeight; el.style.animation = null; });
+            colorNameEl.removeAttribute('data-color-code'); colorNameEl.removeAttribute('data-base-text');
+            if (!barwnikIdValue) { phSliderContainer.classList.remove('visible'); circle.style.backgroundColor = 'rgba(255,255,255,0.1)'; circle.style.borderColor = 'var(--border-color)'; circle.classList.remove('colored'); colorNameEl.textContent = 'Wybierz wskaźnik'; solutionNatureEl.textContent = ''; return; }
+            phSliderContainer.classList.add('visible');
+            const barwnikId = parseInt(barwnikIdValue); const roztworPh = parseFloat(roztworPhValue);
+            if (isNaN(roztworPh)) { circle.style.backgroundColor = 'rgba(255,255,255,0.1)'; circle.style.borderColor = 'var(--border-color)'; circle.classList.remove('colored'); colorNameEl.textContent = 'Błędna wartość pH'; solutionNatureEl.textContent = ''; return; }
+            const colorData = kolory.find(k => k.barwnik_id === barwnikId && roztworPh >= k.ph_min && roztworPh < k.ph_max); let finalColorData = colorData; if (!finalColorData) { const lastRange = kolory.filter(k => k.barwnik_id === barwnikId).sort((a, b) => b.ph_max - a.ph_max)[0]; if (lastRange && roztworPh >= lastRange.ph_min && roztworPh <= lastRange.ph_max) { finalColorData = lastRange; } }
+            let odczyn = roztworPh < 7 ? 'kwasowy' : (roztworPh > 7 ? 'zasadowy' : 'obojętny');
+            document.getElementById('slider-ph-value').textContent = roztworPh.toFixed(1).replace('.', ','); solutionNatureEl.innerHTML = `Odczyn: ${odczyn} <span>pH ${roztworPh.toFixed(2).replace('.', ',')}</span>`;
+            if (finalColorData) { circle.style.backgroundColor = finalColorData.kolor === 'transparent' ? '#ffffff' : finalColorData.kolor; circle.style.borderColor = 'transparent'; circle.classList.add('colored'); const baseText = `Kolor: ${finalColorData.nazwa_koloru}`; colorNameEl.textContent = baseText; colorNameEl.dataset.baseText = baseText; colorNameEl.dataset.colorCode = finalColorData.kolor; } else { circle.style.backgroundColor = '#e9ecef'; circle.style.borderColor = 'var(--border-color)'; circle.classList.remove('colored'); colorNameEl.textContent = 'Kolor: pH poza zakresem wskaźnika'; }
+            colorNameEl.style.animation = `fadeInSlideUp var(--animation-speed-slow) ease-out 0.1s forwards`; solutionNatureEl.style.animation = `fadeInSlideUp var(--animation-speed-slow) ease-out 0.2s forwards`;
+        }
 
-        function showMessage(elementId, message, isSuccess, isWarning = false) { const messageEl = document.getElementById(elementId); const existingIcon = messageEl.querySelector('i'); if (existingIcon) existingIcon.remove(); messageEl.textContent = ''; let iconClass = ''; let className = 'message '; if (isWarning) { className += 'warning'; iconClass = 'fas fa-exclamation-triangle'; } else if (isSuccess) { className += 'success'; iconClass = 'fas fa-check-circle'; } else { className += 'error'; iconClass = 'fas fa-times-circle'; } messageEl.className = className; const icon = document.createElement('i'); icon.className = iconClass; messageEl.prepend(icon); messageEl.append(document.createTextNode(" " + message)); messageEl.style.animation = 'none'; void messageEl.offsetHeight; messageEl.style.animation = null; if (!isSuccess && !isWarning) { messageEl.style.animation = `shakeError 0.6s ease-in-out forwards, fadeInSlideUp var(--animation-speed-slow) ease-out forwards`; } else { messageEl.style.animation = `fadeInSlideUp var(--animation-speed-slow) ease-out forwards`; } setTimeout(() => { if (messageEl.textContent.trim().endsWith(message.trim())) { messageEl.style.opacity = '0'; setTimeout(() => { messageEl.textContent = ''; messageEl.className = 'message'; messageEl.style.opacity = ''; }, 500); } }, 5000); }
+        function setupCustomSelect(containerId, items, placeholder, onSelect) {
+            const container = document.getElementById(containerId);
+            const selected = container.querySelector('.select-selected');
+            const optionsContainer = container.querySelector('.options-container');
+            
+            optionsContainer.innerHTML = '';
+            items.forEach(item => {
+                const optionDiv = document.createElement('div');
+                optionDiv.textContent = item.text;
+                optionDiv.dataset.value = item.value;
+                optionDiv.addEventListener('click', () => {
+                    selected.textContent = item.text;
+                    selected.dataset.value = item.value;
+                    container.querySelector('.select-items').classList.add('select-hide');
+                    onSelect(item.value, item.text);
+                });
+                optionsContainer.appendChild(optionDiv);
+            });
+        }
+        
+        function populateDropdowns() {
+            barwniki.sort((a, b) => a.nazwa.localeCompare(b.nazwa, 'pl'));
+            roztwory.sort((a, b) => a.nazwa.localeCompare(b.nazwa, 'pl'));
+            const phSlider = document.getElementById('ph-slider');
+            const roztworSelected = document.querySelector('#roztwor-select .select-selected');
+            
+            const barwnikiItems = barwniki.map(b => ({ text: b.nazwa, value: b.id }));
+            setupCustomSelect('barwnik-select', barwnikiItems, '-- Wybierz wskaźnik --', (value, text) => {
+                if (!roztworSelected.dataset.value) phSlider.value = 7.0;
+                updateDisplay();
+            });
 
-        function updateDisplay() { const barwnikIdValue = document.getElementById('barwnik').value; const roztworPhValue = document.getElementById('roztwor').value; const circle = document.querySelector('.circle'); const colorNameEl = document.getElementById('color-name'); const solutionNatureEl = document.getElementById('solution-nature'); [colorNameEl, solutionNatureEl].forEach(el => { el.style.animation = 'none'; el.offsetHeight; el.style.animation = null; }); colorNameEl.removeAttribute('data-color-code'); colorNameEl.removeAttribute('data-base-text'); if (!barwnikIdValue || !roztworPhValue) { circle.style.backgroundColor = '#ffffff'; circle.style.borderColor = 'var(--border-color)'; circle.classList.remove('colored'); colorNameEl.textContent = 'Wybierz wskaźnik i roztwór'; solutionNatureEl.textContent = ''; return; } const barwnikId = parseInt(barwnikIdValue); const roztworPh = parseFloat(roztworPhValue); if (isNaN(roztworPh)) { circle.style.backgroundColor = '#ffffff'; circle.style.borderColor = 'var(--border-color)'; circle.classList.remove('colored'); colorNameEl.textContent = 'Błędna wartość pH roztworu'; solutionNatureEl.textContent = ''; return; } const colorData = kolory.find(k => k.barwnik_id === barwnikId && roztworPh >= k.ph_min && roztworPh < k.ph_max); let finalColorData = colorData; if (!finalColorData) { const lastRange = kolory.filter(k => k.barwnik_id === barwnikId).sort((a, b) => b.ph_max - a.ph_max)[0]; if (lastRange && roztworPh >= lastRange.ph_min && roztworPh <= lastRange.ph_max) { finalColorData = lastRange; } } let odczyn = ''; if (roztworPh < 7) odczyn = 'kwasowy'; else if (roztworPh === 7) odczyn = 'obojętny'; else if (roztworPh > 7) odczyn = 'zasadowy'; else odczyn = 'nieznany'; solutionNatureEl.innerHTML = `Odczyn: ${odczyn} <span>pH ${roztworPh.toFixed(2)}</span>`; if (finalColorData) { circle.style.backgroundColor = finalColorData.kolor === 'transparent' ? '#ffffff' : finalColorData.kolor; circle.style.borderColor = 'transparent'; circle.classList.add('colored'); const baseText = `Kolor: ${finalColorData.nazwa_koloru}`; colorNameEl.textContent = baseText; colorNameEl.dataset.baseText = baseText; colorNameEl.dataset.colorCode = finalColorData.kolor; } else { circle.style.backgroundColor = '#e9ecef'; circle.style.borderColor = 'var(--border-color)'; circle.classList.remove('colored'); colorNameEl.textContent = 'Kolor: pH poza zakresem wskaźnika'; colorNameEl.removeAttribute('data-color-code'); colorNameEl.removeAttribute('data-base-text'); } colorNameEl.style.animation = `fadeInSlideUp var(--animation-speed-slow) ease-out 0.1s forwards`; solutionNatureEl.style.animation = `fadeInSlideUp var(--animation-speed-slow) ease-out 0.2s forwards`; }
+            const roztworyItems = roztwory.map(r => ({ text: `${r.nazwa} (pH ${r.ph.toFixed(2).replace('.', ',')})`, value: r.ph }));
+            setupCustomSelect('roztwor-select', roztworyItems, '-- Wybierz roztwór --', (value, text) => {
+                phSlider.value = value;
+                updateDisplay();
+            });
+        }
+        
+        function handleAddBarwnik(event) { event.preventDefault(); const nazwaInput = document.getElementById('nazwa_barwnika'); const nazwa = nazwaInput.value.trim(); const messageElId = 'barwnik-message'; const rangeGroups = document.querySelectorAll('#indicator-ranges-container .indicator-range-group'); if (!nazwa) { showMessage(messageElId, 'Nazwa wskaźnika nie może być pusta.', false); return; } if (barwniki.some(b => b.nazwa.toLowerCase() === nazwa.toLowerCase())) { showMessage(messageElId, 'Wskaźnik o tej nazwie już istnieje.', false); return; } if (rangeGroups.length === 0) { showMessage(messageElId, 'Musisz zdefiniować co najmniej jeden zakres pH i kolor.', false); return; } const newId = getNextBarwnikId(); const newIndicatorRanges = []; let validationPassed = true; rangeGroups.forEach((group, index) => { const phMin = parseFloat(group.querySelector('.range-ph-min').value.replace(',', '.')); const phMax = parseFloat(group.querySelector('.range-ph-max').value.replace(',', '.')); const colorName = group.querySelector('.range-color-name').value.trim(); const colorCss = group.querySelector('.range-color-css').value.trim(); if (isNaN(phMin) || isNaN(phMax) || phMin < 0 || phMax > 14 || phMin >= phMax || !colorName || !colorCss) { validationPassed = false; } else { newIndicatorRanges.push({ barwnik_id: newId, ph_min: phMin, ph_max: phMax, kolor: colorCss, nazwa_koloru: colorName }); } }); if (!validationPassed) { showMessage(messageElId, 'Sprawdź, czy wszystkie pola w zakresach są poprawnie wypełnione.', false); return; } const newBarwnik = { id: newId, nazwa: nazwa }; barwniki.push(newBarwnik); kolory.push(...newIndicatorRanges); let customBarwniki = JSON.parse(localStorage.getItem('uwi_custom_barwniki')) || []; let customKolory = JSON.parse(localStorage.getItem('uwi_custom_kolory')) || []; customBarwniki.push(newBarwnik); customKolory.push(...newIndicatorRanges); localStorage.setItem('uwi_custom_barwniki', JSON.stringify(customBarwniki)); localStorage.setItem('uwi_custom_kolory', JSON.stringify(customKolory)); populateDropdowns(); const barwnikSelected = document.querySelector('#barwnik-select .select-selected'); barwnikSelected.textContent = newBarwnik.nazwa; barwnikSelected.dataset.value = newBarwnik.id; nazwaInput.value = ''; clearIndicatorFormRanges(); showMessage(messageElId, `Dodano i zapisano wskaźnik: ${nazwa}.`, true); updateDisplay(); }
+        function handleAddRoztwor(event) { event.preventDefault(); const nazwaInput = document.getElementById('nazwa_roztworu'); const phInput = document.getElementById('ph_roztworu'); const messageElId = 'roztwor-message'; const nazwa = nazwaInput.value.trim(); const phValue = phInput.value.trim().replace(',', '.'); if (!nazwa || !phValue) { showMessage(messageElId, 'Nazwa i pH roztworu są wymagane.', false); return; } const ph = parseFloat(phValue); if (isNaN(ph) || ph < 0 || ph > 14) { showMessage(messageElId, 'Wprowadź poprawne pH (liczba od 0 do 14, użyj przecinka).', false); return; } const newId = getNextRoztworId(); const newRoztwor = { id: newId, nazwa: nazwa, ph: ph }; roztwory.push(newRoztwor); let customRoztwory = JSON.parse(localStorage.getItem('uwi_custom_roztwory')) || []; customRoztwory.push(newRoztwor); localStorage.setItem('uwi_custom_roztwory', JSON.stringify(customRoztwory)); populateDropdowns(); const roztworSelected = document.querySelector('#roztwor-select .select-selected'); roztworSelected.textContent = `${newRoztwor.nazwa} (pH ${newRoztwor.ph.toFixed(2).replace('.', ',')})`; roztworSelected.dataset.value = newRoztwor.ph; document.getElementById('ph-slider').value = ph; nazwaInput.value = ''; phInput.value = ''; showMessage(messageElId, `Dodano i zapisano roztwór: ${nazwa}.`, true); updateDisplay(); }
 
-        function populateDropdowns() { const barwnikSelect = document.getElementById('barwnik'); const roztworSelect = document.getElementById('roztwor'); const currentBarwnikValue = barwnikSelect.value; const currentRoztworValue = roztworSelect.value; barwnikSelect.length = 1; roztworSelect.length = 1; barwniki.sort((a, b) => a.nazwa.localeCompare(b.nazwa, 'pl')); roztwory.sort((a, b) => a.nazwa.localeCompare(b.nazwa, 'pl')); barwniki.forEach(barwnik => { const option = document.createElement('option'); option.value = barwnik.id; option.textContent = barwnik.nazwa; barwnikSelect.appendChild(option); }); roztwory.forEach(roztwor => { const option = document.createElement('option'); option.value = roztwor.ph; option.textContent = `${roztwor.nazwa} (pH ${roztwor.ph.toFixed(2)})`; roztworSelect.appendChild(option); }); if (barwniki.some(b => b.id == currentBarwnikValue)) { barwnikSelect.value = currentBarwnikValue; } if (roztwory.some(r => String(r.ph) === currentRoztworValue)) { roztworSelect.value = currentRoztworValue; } }
-
-        function createRangeGroupHTML() { return `<div class="indicator-range-group"><div class="range-control-group"><label>pH Min:</label><input type="number" step="0.1" min="0" max="14" class="range-ph-min" required placeholder="0.0"></div><div class="range-control-group"><label>pH Max:</label><input type="number" step="0.1" min="0" max="14" class="range-ph-max" required placeholder="14.0"></div><div class="range-control-group"><label>Nazwa koloru:</label><input type="text" class="range-color-name" required placeholder="np. Czerwony"></div><div class="range-control-group"><label>Kolor (CSS):</label><div class="color-input-group"><input type="color" class="range-color-picker" title="Wybierz kolor wizualnie"><input type="text" class="range-color-css" required placeholder="np. red, #FF0000" title="Wpisz nazwę CSS, hex lub rgb/rgba"></div></div><div class="remove-range-btn-container"><button type="button" class="remove-range-btn" title="Usuń zakres"><i class="fas fa-trash-alt"></i> Usuń Zakres</button></div></div>`; }
-        function syncColorPicker(event) { const picker = event.target; const cssInput = picker.closest('.color-input-group').querySelector('.range-color-css'); if(cssInput) cssInput.value = picker.value; }
-        function syncColorText(event) { const cssInput = event.target; const picker = cssInput.closest('.color-input-group').querySelector('.range-color-picker'); if (picker) picker.value = cssInput.value; }
-
-        function addIndicatorRange(event) { const container = document.getElementById('indicator-ranges-container'); const newGroupHTML = createRangeGroupHTML(); container.insertAdjacentHTML('beforeend', newGroupHTML); const newGroup = container.lastElementChild; newGroup.querySelector('.remove-range-btn').addEventListener('click', removeIndicatorRange); newGroup.querySelector('.range-color-picker').addEventListener('input', syncColorPicker); newGroup.querySelector('.range-color-css').addEventListener('change', syncColorText); const newPhMinInput = newGroup.querySelector('.range-ph-min'); const previousGroups = container.querySelectorAll('.indicator-range-group'); if (previousGroups.length > 1) { const lastGroup = previousGroups[previousGroups.length - 2]; const lastPhMaxInput = lastGroup.querySelector('.range-ph-max'); if(lastPhMaxInput && lastPhMaxInput.value) { newPhMinInput.value = lastPhMaxInput.value; } } }
-        function removeIndicatorRange(event) { const groupToRemove = event.target.closest('.indicator-range-group'); groupToRemove.classList.add('removing'); groupToRemove.addEventListener('transitionend', () => { groupToRemove.remove(); }, { once: true }); }
-        function clearIndicatorFormRanges() { const container = document.getElementById('indicator-ranges-container'); container.innerHTML = ''; container.insertAdjacentHTML('beforeend', createRangeGroupHTML()); const firstGroup = container.firstElementChild; const removeBtnContainer = firstGroup.querySelector('.remove-range-btn-container'); if(removeBtnContainer) removeBtnContainer.style.display = 'none'; firstGroup.querySelector('.range-color-picker').addEventListener('input', syncColorPicker); firstGroup.querySelector('.range-color-css').addEventListener('change', syncColorText); firstGroup.querySelector('.range-ph-min').value = ''; firstGroup.querySelector('.range-ph-max').value = ''; firstGroup.querySelector('.range-color-name').value = ''; firstGroup.querySelector('.range-color-css').value = ''; firstGroup.querySelector('.range-color-picker').value = '#8a2be2'; }
-
-        function handleAddBarwnik(event) { event.preventDefault(); const nazwaInput = document.getElementById('nazwa_barwnika'); const nazwa = nazwaInput.value.trim(); const messageElId = 'barwnik-message'; const rangesContainer = document.getElementById('indicator-ranges-container'); const rangeGroups = rangesContainer.querySelectorAll('.indicator-range-group'); if (!nazwa) { showMessage(messageElId, 'Nazwa wskaźnika nie może być pusta.', false); return; } if (barwniki.some(b => b.nazwa.toLowerCase() === nazwa.toLowerCase())) { showMessage(messageElId, 'Wskaźnik o tej nazwie już istnieje.', false); return; } if (rangeGroups.length === 0) { showMessage(messageElId, 'Musisz zdefiniować co najmniej jeden zakres pH i kolor.', false); return; } const newId = getNextBarwnikId(); const newIndicatorRanges = []; let validationPassed = true; let minPhOverall = 15; let maxPhOverall = -1; rangeGroups.forEach((group, index) => { const phMinInput = group.querySelector('.range-ph-min'); const phMaxInput = group.querySelector('.range-ph-max'); const colorNameInput = group.querySelector('.range-color-name'); const colorCssInput = group.querySelector('.range-color-css'); const phMin = parseFloat(phMinInput.value); const phMax = parseFloat(phMaxInput.value); const colorName = colorNameInput.value.trim(); const colorCss = colorCssInput.value.trim(); [phMinInput, phMaxInput, colorNameInput, colorCssInput].forEach(el => el.style.borderColor = ''); if (isNaN(phMin) || isNaN(phMax) || phMin < 0 || phMax > 14 || phMin >= phMax) { showMessage(messageElId, `Błąd w zakresie ${index + 1}: Nieprawidłowe wartości pH (min ${phMin} musi być mniejsze niż max ${phMax}, zakres 0-14).`, false); phMinInput.style.borderColor = 'var(--error-color)'; phMaxInput.style.borderColor = 'var(--error-color)'; validationPassed = false; return; } if (!colorName) { showMessage(messageElId, `Błąd w zakresie ${index + 1}: Nazwa koloru jest wymagana.`, false); colorNameInput.style.borderColor = 'var(--error-color)'; validationPassed = false; return; } if (!colorCss) { showMessage(messageElId, `Błąd w zakresie ${index + 1}: Kolor CSS jest wymagany.`, false); colorCssInput.style.borderColor = 'var(--error-color)'; validationPassed = false; return; } newIndicatorRanges.push({ barwnik_id: newId, ph_min: phMin, ph_max: phMax, kolor: colorCss, nazwa_koloru: colorName }); if (phMin < minPhOverall) minPhOverall = phMin; if (phMax > maxPhOverall) maxPhOverall = phMax; }); if (validationPassed && (minPhOverall > 0 || maxPhOverall < 14)) { showMessage(messageElId, `Ostrzeżenie: Zdefiniowane zakresy (od ${minPhOverall.toFixed(1)} do ${maxPhOverall.toFixed(1)}) nie pokrywają w pełni skali pH 0-14.`, false, true); } if (!validationPassed) return; const newBarwnik = { id: newId, nazwa: nazwa }; barwniki.push(newBarwnik); kolory.push(...newIndicatorRanges); populateDropdowns(); document.getElementById('barwnik').value = newId; nazwaInput.value = ''; clearIndicatorFormRanges(); showMessage(messageElId, `Dodano wskaźnik: ${nazwa}. Dane dostępne do odświeżenia strony.`, true); updateDisplay(); }
-        function handleAddRoztwor(event) { event.preventDefault(); const nazwaInput = document.getElementById('nazwa_roztworu'); const phInput = document.getElementById('ph_roztworu'); const messageElId = 'roztwor-message'; const nazwa = nazwaInput.value.trim(); const phValue = phInput.value.trim(); if (!nazwa || !phValue) { showMessage(messageElId, 'Nazwa i pH roztworu są wymagane.', false); return; } const ph = parseFloat(phValue); if (isNaN(ph) || ph < 0 || ph > 14) { showMessage(messageElId, 'Wprowadź poprawne pH (liczba od 0 do 14).', false); return; } const newId = getNextRoztworId(); const newRoztwor = { id: newId, nazwa: nazwa, ph: ph }; roztwory.push(newRoztwor); populateDropdowns(); document.getElementById('roztwor').value = ph; nazwaInput.value = ''; phInput.value = ''; showMessage(messageElId, `Dodano roztwór: ${nazwa} (pH ${ph.toFixed(2)}). Dane dostępne do odświeżenia strony.`, true); updateDisplay(); }
+        function clearIndicatorFormRanges() { 
+            document.getElementById('indicator-ranges-container').innerHTML = '';
+        }
 
         window.onload = () => {
-            const preloader = document.getElementById('preloader'); const colorNameEl = document.getElementById('color-name');
-            document.body.classList.add('loaded'); initializeData(); populateDropdowns();
-            document.getElementById('barwnik').addEventListener('change', updateDisplay); document.getElementById('roztwor').addEventListener('change', updateDisplay);
-            document.getElementById('add-barwnik-form').addEventListener('submit', handleAddBarwnik); document.getElementById('add-roztwor-form').addEventListener('submit', handleAddRoztwor);
-            document.querySelector('.add-range-btn').addEventListener('click', addIndicatorRange);
-            const firstRangeGroup = document.querySelector('.indicator-range-group');
-            if (firstRangeGroup) { const removeBtnContainer = firstRangeGroup.querySelector('.remove-range-btn-container'); if(removeBtnContainer) removeBtnContainer.style.display = 'none'; firstRangeGroup.querySelector('.range-color-picker').addEventListener('input', syncColorPicker); firstRangeGroup.querySelector('.range-color-css').addEventListener('change', syncColorText); }
-            colorNameEl.addEventListener('mouseenter', () => { if (colorNameEl.dataset.colorCode && colorNameEl.dataset.baseText) { colorNameEl.innerHTML = `${colorNameEl.dataset.baseText} <span style="font-family: var(--font-mono); font-size: 0.9em; color: var(--label-color); background-color: rgba(255,255,255,0.1); padding: 2px 5px; border-radius: 4px; border: 1px solid var(--border-color); margin-left: 5px;">(${colorNameEl.dataset.colorCode})</span>`; } });
-            colorNameEl.addEventListener('mouseleave', () => { if (colorNameEl.dataset.baseText) { colorNameEl.textContent = colorNameEl.dataset.baseText; } });
+            document.body.classList.add('loaded');
+            loadData();
+            populateDropdowns();
+
+            const phSlider = document.getElementById('ph-slider');
+            phSlider.addEventListener('input', () => {
+                const roztworSelected = document.querySelector('#roztwor-select .select-selected');
+                roztworSelected.textContent = '-- Wybierz roztwór --';
+                roztworSelected.dataset.value = '';
+                updateDisplay();
+            });
+
+            document.querySelectorAll('.custom-select .select-selected').forEach(selected => {
+                selected.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    closeAllSelect(this);
+                    this.nextElementSibling.classList.toggle('select-hide');
+                    this.classList.toggle('select-arrow-active');
+                });
+            });
+
+            document.addEventListener('click', closeAllSelect);
+            
+            document.getElementById('reset-data-btn').addEventListener('click', () => {
+                if (confirm('Czy na pewno chcesz usunąć wszystkie swoje zapisane wskaźniki i roztwory? Tej operacji nie można cofnąć.')) {
+                    localStorage.removeItem('uwi_custom_roztwory');
+                    localStorage.removeItem('uwi_custom_barwniki');
+                    localStorage.removeItem('uwi_custom_kolory');
+                    location.reload();
+                }
+            });
+
+            document.getElementById('add-barwnik-form').addEventListener('submit', handleAddBarwnik); 
+            document.getElementById('add-roztwor-form').addEventListener('submit', handleAddRoztwor);
+            
             updateDisplay();
         };
+
+        function closeAllSelect(elmnt) {
+            let x = document.getElementsByClassName("select-items");
+            let y = document.getElementsByClassName("select-selected");
+            for (let i = 0; i < y.length; i++) {
+                if (elmnt == y[i]) {
+                    
+                } else {
+                    y[i].classList.remove("select-arrow-active");
+                }
+            }
+            for (let i = 0; i < x.length; i++) {
+                if (elmnt && elmnt.nextElementSibling == x[i]) {
+                    
+                } else {
+                    x[i].classList.add("select-hide");
+                }
+            }
+        }
     </script>
 </head>
 <body>
     <div id="preloader"><div class="spinner"></div></div>
 
     <div class="container">
-        <h1><i class="fas fa-flask-vial"></i> Super ultra laboratorium pH</h1>
+        <h1><i class="fas fa-vial"></i>UWI<i class="fas fa-prescription-bottle"></i><br> Uniwersalny Wirtualny Indykator <br> </h1>
 
         <div class="controls">
             <div class="control-group">
-                <label for="barwnik">Wskaźnik</label>
-                <select id="barwnik">
-                    <option value="">-- Wybierz wskaźnik --</option>
-                </select>
+                <label for="barwnik-search">Wskaźnik</label>
+                <div id="barwnik-select" class="custom-select-container">
+                    <div class="custom-select">
+                        <div class="select-selected" data-value="">-- Wybierz wskaźnik --</div>
+                        <div class="select-items select-hide">
+                            <div class="options-container"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="control-group">
-                <label for="roztwor">Roztwór</label>
-                <select id="roztwor">
-                    <option value="">-- Wybierz roztwór --</option>
-                </select>
+                <label for="roztwor-search">Roztwór (Preset pH)</label>
+                <div id="roztwor-select" class="custom-select-container">
+                    <div class="custom-select">
+                        <div class="select-selected" data-value="">-- Wybierz roztwór --</div>
+                        <div class="select-items select-hide">
+                            <div class="options-container"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -197,49 +322,48 @@
             <div class="circle-container">
                 <div class="circle"></div>
             </div>
+            <div id="ph-slider-container">
+                <label for="ph-slider">Dostosuj pH: <span id="slider-ph-value">7,0</span></label>
+                <input type="range" id="ph-slider" min="0" max="14" value="7" step="0.1">
+            </div>
             <div id="info-display">
-                <span id="color-name" title="Najedź, aby zobaczyć kod koloru CSS">Wybierz wskaźnik i roztwór</span>
+                <span id="color-name" title="Najedź, aby zobaczyć kod koloru CSS">Wybierz wskaźnik</span>
                 <span id="solution-nature"></span>
             </div>
         </div>
 
         <div class="form-container">
             <h2><i class="fas fa-vial"></i> Dodaj Nowy Wskaźnik</h2>
-            <form id="add-barwnik-form">
+            <form id="add-barwnik-form" novalidate>
                  <div class="control-group" style="width: 100%; margin-bottom: 20px;">
                     <label for="nazwa_barwnika">Nazwa Wskaźnika</label>
-                    <input type="text" id="nazwa_barwnika" name="nazwa_barwnika" required placeholder="Np. Nowy Wskaźnik">
+                    <input type="text" id="nazwa_barwnika" required placeholder="Np. Nowy Wskaźnik">
                 </div>
-
-                <label style="font-weight: 600; margin-bottom: 15px; display: block; text-align: left; font-size: 1.1em; color: var(--primary-color);">Zakresy pH i Kolory</label>
+                <label style="font-weight: 600; margin-bottom: 15px; display: block; text-align: left; font-size: 1.1em;">Zakresy pH i Kolory</label>
                 <div id="indicator-ranges-container">
-                     <div class="indicator-range-group">
-                         <div class="range-control-group"><label>pH Min:</label><input type="number" step="0.1" min="0" max="14" class="range-ph-min" required placeholder="0.0"></div>
-                         <div class="range-control-group"><label>pH Max:</label><input type="number" step="0.1" min="0" max="14" class="range-ph-max" required placeholder="14.0"></div>
-                         <div class="range-control-group"><label>Nazwa koloru:</label><input type="text" class="range-color-name" required placeholder="np. Czerwony"></div>
-                         <div class="range-control-group"><label>Kolor (CSS):</label><div class="color-input-group"><input type="color" class="range-color-picker" title="Wybierz kolor wizualnie" value="#8a2be2"><input type="text" class="range-color-css" required placeholder="np. blueviolet, #8a2be2" title="Wpisz nazwę CSS, hex lub rgb/rgba" value="#8a2be2"></div></div>
-                         <div class="remove-range-btn-container" style="display: none;"><button type="button" class="remove-range-btn" title="Usuń zakres"><i class="fas fa-trash-alt"></i> Usuń Zakres</button></div>
-                     </div>
                 </div>
                  <button type="button" class="add-range-btn"><i class="fas fa-plus-circle"></i> Dodaj Zakres</button>
-
                 <button type="submit"><i class="fas fa-plus"></i> Dodaj Wskaźnik</button>
             </form>
-            <div id="barwnik-message"></div>
+            <div id="barwnik-message" class="message"></div>
 
             <h2><i class="fas fa-prescription-bottle"></i> Dodaj Nowy Roztwór</h2>
-            <form id="add-roztwor-form">
+            <form id="add-roztwor-form" novalidate>
                  <div class="control-group" style="width: 100%; margin-bottom: 15px;">
                     <label for="nazwa_roztworu">Nazwa Roztworu</label>
-                    <input type="text" id="nazwa_roztworu" name="nazwa_roztworu" required placeholder="Np. Woda z kranu">
+                    <input type="text" id="nazwa_roztworu" required placeholder="Np. Woda z kranu">
                 </div>
                  <div class="control-group" style="width: 100%; margin-bottom: 15px;">
                     <label for="ph_roztworu">Wartość pH (0-14)</label>
-                    <input type="number" id="ph_roztworu" name="ph_roztworu" step="0.01" min="0" max="14" required placeholder="Np. 7.2">
+                    <input type="text" id="ph_roztworu" required placeholder="Np. 7,2">
                 </div>
                 <button type="submit"><i class="fas fa-plus"></i> Dodaj Roztwór</button>
             </form>
-            <div id="roztwor-message"></div>
+            <div id="roztwor-message" class="message"></div>
+            
+            <div id="reset-data-container">
+                <button id="reset-data-btn" title="Usuwa wszystkie zapisane lokalnie wskaźniki i roztwory."><i class="fas fa-trash-alt"></i> Wyczyść moje dane</button>
+            </div>
         </div>
     </div>
     <div class="copyright">© Antoni Nowak 2025</div>
