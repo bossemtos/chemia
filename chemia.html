@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tytuł będzie ustawiany dynamicznie przez JS -->
     <title>UWI - Uniwersalny Wirtualny Indykator</title>
     <link rel="icon" type="image/x-icon" href="logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,7 +52,13 @@
         #preloader .spinner { width: 60px; height: 60px; border: 5px solid rgba(255, 255, 255, 0.2); border-top-color: var(--secondary-glow); border-radius: 50%; animation: preloaderSpin 1s linear infinite; }
         body.loaded #preloader { opacity: 0; visibility: hidden; }
 
-        .container { background: var(--container-bg); backdrop-filter: blur(10px) saturate(180%); padding: 50px 60px; border-radius: 24px; box-shadow: 0 0 30px var(--shadow-color-glow), 0 0 60px rgba(0, 229, 255, 0.1), inset 0 0 0 1px var(--container-border); text-align: center; display: flex; flex-direction: column; align-items: center; width: 95%; max-width: 950px; border: 1px solid var(--container-border); animation: scaleInGlow 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0.5s forwards; opacity: 0; }
+        .container { background: var(--container-bg); backdrop-filter: blur(10px) saturate(180%); padding: 50px 60px; border-radius: 24px; box-shadow: 0 0 30px var(--shadow-color-glow), 0 0 60px rgba(0, 229, 255, 0.1), inset 0 0 0 1px var(--container-border); text-align: center; display: flex; flex-direction: column; align-items: center; width: 95%; max-width: 950px; border: 1px solid var(--container-border); animation: scaleInGlow 1s cubic-bezier(0.165, 0.84, 0.44, 1) 0.5s forwards; opacity: 0; position: relative; }
+        
+        #language-switcher { position: absolute; top: 20px; right: 25px; display: flex; gap: 10px; z-index: 100; }
+        #language-switcher img { width: 28px; height: 28px; cursor: pointer; border-radius: 50%; transition: transform 0.2s ease, box-shadow 0.2s ease; border: 2px solid transparent; }
+        #language-switcher img:hover { transform: scale(1.15); }
+        #language-switcher img.active { border-color: var(--secondary-glow); box-shadow: 0 0 10px var(--secondary-glow); transform: scale(1.1); }
+        
         h1 { font-family: var(--font-display); color: #fff; margin-bottom: 45px; font-weight: 700; font-size: 3em; position: relative; letter-spacing: 2px; text-shadow: 0 0 10px var(--primary-glow), 0 0 20px var(--secondary-glow); }
         h1 i { margin-right: 18px; color: var(--secondary-glow); animation: floatCosmic 4s ease-in-out infinite; display: inline-block; text-shadow: 0 0 15px var(--secondary-glow); }
         h1 > i.fa-prescription-bottle { margin-left: 18px; }
@@ -135,11 +142,303 @@
         .copyright { text-align: center; margin-top: 50px; font-size: 0.9em; color: rgba(255, 255, 255, 0.6); padding-bottom: 20px; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); opacity: 0; animation: fadeInSlideUp 1.2s ease-out 1.5s forwards; }
     </style>
     <script>
-        const defaultBarwniki = [ { id: 1, nazwa: 'Fenoloftaleina' }, { id: 2, nazwa: 'Oranż metylowy' }, { id: 3, nazwa: 'Lakmus (papierek)' }, { id: 4, nazwa: 'Błękit tymolowy' }, { id: 5, nazwa: 'Czerwień metylowa' }, { id: 6, nazwa: 'Błękit bromotymolowy' }, { id: 7, nazwa: 'Czerwień fenolowa' }, { id: 8, nazwa: 'Zieleń bromokrezolowa' }, { id: 9, nazwa: 'Purpura bromokrezolowa' }, { id: 10, nazwa: 'Fiolet metylowy' }, { id: 11, nazwa: 'Zieleń malachitowa' }, { id: 12, nazwa: 'Tymoloftaleina' }, { id: 13, nazwa: 'Alizaryna żółta R' }, { id: 14, nazwa: 'Indygokarmin' }, { id: 15, nazwa: 'Błękit ksylenolowy' }, { id: 16, nazwa: 'Czerwień krezolowa' }, { id: 17, nazwa: 'Błękit metylenowy' }, { id: 18, nazwa: 'Żółcień metanilowa' }, { id: 19, nazwa: 'Oranż ksylenolowy' }, { id: 20, nazwa: 'Fiolet krystaliczny' }, { id: 21, nazwa: 'Czerwień Kongo' }, { id: 22, nazwa: 'Fluoresceina' }, { id: 23, nazwa: 'Eozyna Y' }, { id: 24, nazwa: 'Metakrezol purpurowy' }, { id: 25, nazwa: 'Błękit bromofenolowy' }, { id: 26, nazwa: 'Czerwień alizarynowa S' }, { id: 27, nazwa: 'Tropeolina OO' }, { id: 28, nazwa: 'Brilliant Yellow' }, { id: 29, nazwa: 'Wyciąg z czerwonej kapusty' }, { id: 30, nazwa: 'Ekstrakt z kurkumy' }, { id: 31, nazwa: 'Sok z buraków' }, { id: 32, nazwa: 'Napar z czarnej herbaty' }, { id: 33, nazwa: 'Wyciąg z płatków róży' }, { id: 34, nazwa: 'Ekstrakt z hibiskusa' }, { id: 35, nazwa: 'Uniwersalny wskaźnik (roztwór)' }, { id: 36, nazwa: 'Oranż IV (Tropeolina 00)' }, { id: 37, nazwa: 'Błękit Nilu A' }, { id: 38, nazwa: 'Tionina' }, { id: 39, nazwa: 'Rezazuryna' }, { id: 40, nazwa: 'Lakmoid' }, { id: 41, nazwa: 'Orceina' }, { id: 42, nazwa: 'Neutral Red' }, { id: 43, nazwa: 'Ponceau S' }, { id: 44, nazwa: 'Pinakryptol żółty' }, { id: 45, nazwa: 'Chryzoidyna G' }, { id: 46, nazwa: 'Azolitmina' }, { id: 47, nazwa: 'Nitrazyna żółta' }, { id: 48, nazwa: 'Patent Blue V' }, { id: 49, nazwa: 'Erytrolitmina' }, { id: 50, nazwa: 'Magnezon I' } ];
-        const defaultRoztwory = [ { id: 1, nazwa: 'Kwas solny 1 M', ph: 0.0 }, { id: 2, nazwa: 'Kwas solny 0.1 M', ph: 1.0 }, { id: 3, nazwa: 'Kwas solny 0.01 M', ph: 2.0 }, { id: 4, nazwa: 'Kwas siarkowy(VI) 0.5 M', ph: 0.0 }, { id: 5, nazwa: 'Kwas siarkowy(VI) 0.05 M', ph: 1.0 }, { id: 6, nazwa: 'Kwas azotowy(V) 0.1 M', ph: 1.0 }, { id: 7, nazwa: 'Kwas octowy 1 M', ph: 2.4 }, { id: 8, nazwa: 'Kwas octowy 0.1 M', ph: 2.9 }, { id: 9, nazwa: 'Kwas cytrynowy 0.1 M', ph: 2.1 }, { id: 10, nazwa: 'Sok żołądkowy', ph: 1.5 }, { id: 11, nazwa: 'Sok cytrynowy', ph: 2.4 }, { id: 12, nazwa: 'Ocet', ph: 2.9 }, { id: 13, nazwa: 'Sok pomarańczowy', ph: 3.5 }, { id: 14, nazwa: 'Coca-Cola', ph: 2.5 }, { id: 15, nazwa: 'Wino', ph: 3.5 }, { id: 16, nazwa: 'Piwo', ph: 4.5 }, { id: 17, nazwa: 'Kawa czarna', ph: 5.0 }, { id: 18, nazwa: 'Herbata czarna', ph: 5.5 }, { id: 19, nazwa: 'Kwaśny deszcz', ph: 4.3 }, { id: 20, nazwa: 'Mleko', ph: 6.6 }, { id: 21, nazwa: 'Ślina ludzka', ph: 6.8 }, { id: 22, nazwa: 'Woda destylowana (czysta)', ph: 7.0 }, { id: 23, nazwa: 'Woda z kranu (typowa)', ph: 7.5 }, { id: 24, nazwa: 'Krew ludzka', ph: 7.4 }, { id: 25, nazwa: 'Woda morska', ph: 8.0 }, { id: 26, nazwa: 'Roztwór sody oczyszczonej (NaHCO3)', ph: 8.3 }, { id: 27, nazwa: 'Roztwór boraksu', ph: 9.2 }, { id: 28, nazwa: 'Pasta do zębów', ph: 9.0 }, { id: 29, nazwa: 'Woda wapienna (nasycony Ca(OH)2)', ph: 12.4 }, { id: 30, nazwa: 'Roztwór mydła w płynie', ph: 9.5 }, { id: 31, nazwa: 'Amoniak (roztwór wodny 0.1 M)', ph: 11.1 }, { id: 32, nazwa: 'Wybielacz domowy', ph: 12.5 }, { id: 33, nazwa: 'Środek do czyszczenia piekarnika', ph: 13.0 }, { id: 34, nazwa: 'Wodorotlenek sodu 0.01 M', ph: 12.0 }, { id: 35, nazwa: 'Wodorotlenek sodu 0.1 M', ph: 13.0 }, { id: 36, nazwa: 'Wodorotlenek sodu 1 M', ph: 14.0 }, { id: 37, nazwa: 'Wodorotlenek potasu 0.1 M', ph: 13.0 }, { id: 38, nazwa: 'Roztwór NaCl 0.1 M', ph: 7.0 }, { id: 39, nazwa: 'Roztwór NH4Cl 0.1 M (chlorek amonu)', ph: 5.1 }, { id: 40, nazwa: 'Roztwór CH3COONa 0.1 M (octan sodu)', ph: 8.9 }, { id: 41, nazwa: 'Roztwór Na2CO3 0.1 M (węglan sodu)', ph: 11.6 }, { id: 42, nazwa: 'Bufor pH 4.0 (ftalanowy)', ph: 4.0 }, { id: 43, nazwa: 'Bufor pH 7.0 (fosforanowy)', ph: 7.0 }, { id: 44, nazwa: 'Bufor pH 9.0 (boranowy)', ph: 9.0 }, { id: 45, nazwa: 'Bufor pH 10.0 (węglanowy)', ph: 10.0 }, { id: 46, nazwa: 'Kwas fosforowy(V) 0.1 M', ph: 1.5 }, { id: 47, nazwa: 'Wodorowęglan sodu 0.1 M', ph: 8.3 }, { id: 48, nazwa: 'Woda mineralna niegazowana', ph: 7.2 }, { id: 49, nazwa: 'Woda mineralna gazowana', ph: 5.0 }, { id: 50, nazwa: 'Płyn do mycia naczyń', ph: 8.5 } ];
-        const defaultKolory = [ { barwnik_id: 1, ph_min: 0.0, ph_max: 8.2, kolor: 'transparent', nazwa_koloru: 'Bezbarwny' }, { barwnik_id: 1, ph_min: 8.2, ph_max: 10.0, kolor: '#FF80AB', nazwa_koloru: 'Malinowy (różowy)' }, { barwnik_id: 1, ph_min: 10.0, ph_max: 14.0, kolor: '#D81B60', nazwa_koloru: 'Malinowy (intensywny)' }, { barwnik_id: 2, ph_min: 0.0, ph_max: 3.1, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 2, ph_min: 3.1, ph_max: 4.4, kolor: '#ffa000', nazwa_koloru: 'Pomarańczowy' }, { barwnik_id: 2, ph_min: 4.4, ph_max: 14.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 3, ph_min: 0.0, ph_max: 5.0, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 3, ph_min: 5.0, ph_max: 8.0, kolor: '#7b1fa2', nazwa_koloru: 'Fioletowy' }, { barwnik_id: 3, ph_min: 8.0, ph_max: 14.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 4, ph_min: 0.0, ph_max: 1.2, kolor: '#d32f2f', nazwa_koloru: 'Czerwony (I)' }, { barwnik_id: 4, ph_min: 1.2, ph_max: 2.8, kolor: '#ffa000', nazwa_koloru: 'Pomarańczowy (I)' }, { barwnik_id: 4, ph_min: 2.8, ph_max: 8.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 4, ph_min: 8.0, ph_max: 9.6, kolor: '#689f38', nazwa_koloru: 'Zielony (II)' }, { barwnik_id: 4, ph_min: 9.6, ph_max: 14.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski (II)' }, { barwnik_id: 5, ph_min: 0.0, ph_max: 4.4, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 5, ph_min: 4.4, ph_max: 6.2, kolor: '#ffa000', nazwa_koloru: 'Pomarańczowy' }, { barwnik_id: 5, ph_min: 6.2, ph_max: 14.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 6, ph_min: 0.0, ph_max: 6.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 6, ph_min: 6.0, ph_max: 7.6, kolor: '#689f38', nazwa_koloru: 'Zielony' }, { barwnik_id: 6, ph_min: 7.6, ph_max: 14.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 7, ph_min: 0.0, ph_max: 6.6, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 7, ph_min: 6.6, ph_max: 8.0, kolor: '#e57373', nazwa_koloru: 'Różowy' }, { barwnik_id: 7, ph_min: 8.0, ph_max: 14.0, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 8, ph_min: 0.0, ph_max: 3.8, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 8, ph_min: 3.8, ph_max: 5.4, kolor: '#689f38', nazwa_koloru: 'Zielony' }, { barwnik_id: 8, ph_min: 5.4, ph_max: 14.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 9, ph_min: 0.0, ph_max: 5.2, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 9, ph_min: 5.2, ph_max: 6.8, kolor: '#7b1fa2', nazwa_koloru: 'Fioletowy' }, { barwnik_id: 9, ph_min: 6.8, ph_max: 14.0, kolor: '#5e35b1', nazwa_koloru: 'Fioletowy (ciemny)' }, { barwnik_id: 10, ph_min: 0.0, ph_max: 0.5, kolor: '#ffeb3b', nazwa_koloru: 'Żółty (zielonkawy)' }, { barwnik_id: 10, ph_min: 0.5, ph_max: 1.5, kolor: '#1a237e', nazwa_koloru: 'Niebieski' }, { barwnik_id: 10, ph_min: 1.5, ph_max: 2.0, kolor: '#7b1fa2', nazwa_koloru: 'Fioletowy' }, { barwnik_id: 10, ph_min: 2.0, ph_max: 14.0, kolor: '#7b1fa2', nazwa_koloru: 'Fioletowy (zasadowy)' }, { barwnik_id: 11, ph_min: 0.0, ph_max: 0.2, kolor: '#ffeb3b', nazwa_koloru: 'Żółty (I)' }, { barwnik_id: 11, ph_min: 0.2, ph_max: 1.8, kolor: '#0097a7', nazwa_koloru: 'Niebiesko-zielony (I)' }, { barwnik_id: 11, ph_min: 1.8, ph_max: 11.6, kolor: '#0097a7', nazwa_koloru: 'Niebiesko-zielony' }, { barwnik_id: 11, ph_min: 11.6, ph_max: 14.0, kolor: 'transparent', nazwa_koloru: 'Bezbarwny (II)' }, { barwnik_id: 12, ph_min: 0.0, ph_max: 9.3, kolor: 'transparent', nazwa_koloru: 'Bezbarwny' }, { barwnik_id: 12, ph_min: 9.3, ph_max: 10.5, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 12, ph_min: 10.5, ph_max: 14.0, kolor: '#1a237e', nazwa_koloru: 'Niebieski (intensywny)' }, { barwnik_id: 13, ph_min: 0.0, ph_max: 10.1, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 13, ph_min: 10.1, ph_max: 12.0, kolor: '#e57373', nazwa_koloru: 'Różowy/Liliowy' }, { barwnik_id: 13, ph_min: 12.0, ph_max: 14.0, kolor: '#7b1fa2', nazwa_koloru: 'Fioletowy' }, { barwnik_id: 14, ph_min: 0.0, ph_max: 11.4, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 14, ph_min: 11.4, ph_max: 13.0, kolor: '#689f38', nazwa_koloru: 'Zielony' }, { barwnik_id: 14, ph_min: 13.0, ph_max: 14.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 15, ph_min: 0.0, ph_max: 1.2, kolor: '#d32f2f', nazwa_koloru: 'Czerwony (I)' }, { barwnik_id: 15, ph_min: 1.2, ph_max: 2.8, kolor: '#ffeb3b', nazwa_koloru: 'Żółty (I)' }, { barwnik_id: 15, ph_min: 2.8, ph_max: 8.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 15, ph_min: 8.0, ph_max: 9.6, kolor: '#1976d2', nazwa_koloru: 'Niebieski (II)' }, { barwnik_id: 15, ph_min: 9.6, ph_max: 14.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski (II)' }, { barwnik_id: 16, ph_min: 0.0, ph_max: 0.5, kolor: '#d32f2f', nazwa_koloru: 'Czerwony (I)' }, { barwnik_id: 16, ph_min: 0.5, ph_max: 2.5, kolor: '#ffeb3b', nazwa_koloru: 'Żółty (I)' }, { barwnik_id: 16, ph_min: 2.5, ph_max: 7.2, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 16, ph_min: 7.2, ph_max: 8.8, kolor: '#e57373', nazwa_koloru: 'Różowy (II)' }, { barwnik_id: 16, ph_min: 8.8, ph_max: 14.0, kolor: '#d32f2f', nazwa_koloru: 'Czerwony (II)' }, { barwnik_id: 17, ph_min: 0.0, ph_max: 10.6, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 17, ph_min: 10.6, ph_max: 14.0, kolor: 'transparent', nazwa_koloru: 'Bezbarwny (zasadowy)' }, { barwnik_id: 18, ph_min: 0.0, ph_max: 1.2, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 18, ph_min: 1.2, ph_max: 3.2, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 18, ph_min: 3.2, ph_max: 14.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 19, ph_min: 0.0, ph_max: 6.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 19, ph_min: 6.0, ph_max: 7.6, kolor: '#e57373', nazwa_koloru: 'Różowy' }, { barwnik_id: 19, ph_min: 7.6, ph_max: 14.0, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 20, ph_min: 0.0, ph_max: 0.5, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 20, ph_min: 0.5, ph_max: 1.5, kolor: '#689f38', nazwa_koloru: 'Zielony' }, { barwnik_id: 20, ph_min: 1.5, ph_max: 3.2, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 20, ph_min: 3.2, ph_max: 14.0, kolor: '#7b1fa2', nazwa_koloru: 'Fioletowy' }, { barwnik_id: 21, ph_min: 0.0, ph_max: 3.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 21, ph_min: 3.0, ph_max: 5.0, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 21, ph_min: 5.0, ph_max: 14.0, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 22, ph_min: 0.0, ph_max: 4.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty (zielonkawy)' }, { barwnik_id: 22, ph_min: 4.0, ph_max: 6.0, kolor: '#689f38', nazwa_koloru: 'Zielona fluorescencja' }, { barwnik_id: 22, ph_min: 6.0, ph_max: 14.0, kolor: '#689f38', nazwa_koloru: 'Intensywna zielona fluorescencja' }, { barwnik_id: 23, ph_min: 0.0, ph_max: 2.2, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 23, ph_min: 2.2, ph_max: 3.6, kolor: '#e57373', nazwa_koloru: 'Różowy' }, { barwnik_id: 23, ph_min: 3.6, ph_max: 14.0, kolor: '#e57373', nazwa_koloru: 'Różowy (czerwona fluorescencja)' }, { barwnik_id: 24, ph_min: 0.0, ph_max: 1.2, kolor: '#d32f2f', nazwa_koloru: 'Czerwony (I)' }, { barwnik_id: 24, ph_min: 1.2, ph_max: 2.8, kolor: '#ffeb3b', nazwa_koloru: 'Żółty (I)' }, { barwnik_id: 24, ph_min: 2.8, ph_max: 7.4, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 24, ph_min: 7.4, ph_max: 9.0, kolor: '#7b1fa2', nazwa_koloru: 'Fioletowy (II)' }, { barwnik_id: 24, ph_min: 9.0, ph_max: 14.0, kolor: '#5e35b1', nazwa_koloru: 'Fioletowy (ciemny) (II)' }, { barwnik_id: 25, ph_min: 0.0, ph_max: 3.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 25, ph_min: 3.0, ph_max: 4.6, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 25, ph_min: 4.6, ph_max: 14.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 26, ph_min: 0.0, ph_max: 4.4, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 26, ph_min: 4.4, ph_max: 6.2, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 26, ph_min: 6.2, ph_max: 14.0, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 27, ph_min: 0.0, ph_max: 1.3, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 27, ph_min: 1.3, ph_max: 3.0, kolor: '#ffa000', nazwa_koloru: 'Pomarańczowy' }, { barwnik_id: 27, ph_min: 3.0, ph_max: 14.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 28, ph_min: 0.0, ph_max: 6.8, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 28, ph_min: 6.8, ph_max: 8.0, kolor: '#689f38', nazwa_koloru: 'Zielony' }, { barwnik_id: 28, ph_min: 8.0, ph_max: 14.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 29, ph_min: 0.0, ph_max: 3.0, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 29, ph_min: 3.0, ph_max: 7.0, kolor: '#ffa000', nazwa_koloru: 'Pomarańczowy' }, { barwnik_id: 29, ph_min: 7.0, ph_max: 9.5, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 29, ph_min: 9.5, ph_max: 12.0, kolor: '#689f38', nazwa_koloru: 'Zielony' }, { barwnik_id: 29, ph_min: 12.0, ph_max: 14.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 30, ph_min: 0.0, ph_max: 7.5, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 30, ph_min: 7.5, ph_max: 8.5, kolor: '#d32f2f', nazwa_koloru: 'Czerwony (brązowawy)' }, { barwnik_id: 30, ph_min: 8.5, ph_max: 14.0, kolor: '#d32f2f', nazwa_koloru: 'Czerwony (brązowawy)' }, { barwnik_id: 31, ph_min: 0.0, ph_max: 10.0, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 31, ph_min: 10.0, ph_max: 13.0, kolor: '#7b1fa2', nazwa_koloru: 'Fioletowo-niebieski' }, { barwnik_id: 31, ph_min: 13.0, ph_max: 14.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty (blady)' }, { barwnik_id: 32, ph_min: 0.0, ph_max: 3.0, kolor: '#ffeb3b', nazwa_koloru: 'Jasnobrązowy/Żółty' }, { barwnik_id: 32, ph_min: 3.0, ph_max: 10.0, kolor: '#a1887f', nazwa_koloru: 'Brązowy' }, { barwnik_id: 32, ph_min: 10.0, ph_max: 14.0, kolor: '#6d4c41', nazwa_koloru: 'Ciemnobrązowy' }, { barwnik_id: 33, ph_min: 0.0, ph_max: 6.0, kolor: '#e57373', nazwa_koloru: 'Różowy/Czerwony' }, { barwnik_id: 33, ph_min: 6.0, ph_max: 8.0, kolor: '#ba68c8', nazwa_koloru: 'Fioletowy' }, { barwnik_id: 33, ph_min: 8.0, ph_max: 11.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 33, ph_min: 11.0, ph_max: 14.0, kolor: '#689f38', nazwa_koloru: 'Zielony' }, { barwnik_id: 34, ph_min: 0.0, ph_max: 4.0, kolor: '#d32f2f', nazwa_koloru: 'Czerwony (jasny)' }, { barwnik_id: 34, ph_min: 4.0, ph_max: 7.0, kolor: '#c2185b', nazwa_koloru: 'Różowo-fioletowy' }, { barwnik_id: 34, ph_min: 7.0, ph_max: 9.0, kolor: '#7b1fa2', nazwa_koloru: 'Fioletowy' }, { barwnik_id: 34, ph_min: 9.0, ph_max: 14.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski (zielonkawy)' }, { barwnik_id: 35, ph_min: 0.0, ph_max: 3.0, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 35, ph_min: 3.0, ph_max: 6.0, kolor: '#ffa000', nazwa_koloru: 'Pomarańczowy/Żółty' }, { barwnik_id: 35, ph_min: 6.0, ph_max: 8.0, kolor: '#689f38', nazwa_koloru: 'Zielony' }, { barwnik_id: 35, ph_min: 8.0, ph_max: 11.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 35, ph_min: 11.0, ph_max: 14.0, kolor: '#7b1fa2', nazwa_koloru: 'Fioletowy' }, { barwnik_id: 36, ph_min: 0.0, ph_max: 1.3, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 36, ph_min: 1.3, ph_max: 3.0, kolor: '#ffa000', nazwa_koloru: 'Pomarańczowy' }, { barwnik_id: 36, ph_min: 3.0, ph_max: 14.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 37, ph_min: 0.0, ph_max: 9.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 37, ph_min: 9.0, ph_max: 11.0, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 37, ph_min: 11.0, ph_max: 14.0, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 38, ph_min: 0.0, ph_max: 10.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 38, ph_min: 10.0, ph_max: 14.0, kolor: '#7b1fa2', nazwa_koloru: 'Fioletowy' }, { barwnik_id: 39, ph_min: 0.0, ph_max: 3.8, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 39, ph_min: 3.8, ph_max: 6.5, kolor: '#e57373', nazwa_koloru: 'Różowy' }, { barwnik_id: 39, ph_min: 6.5, ph_max: 14.0, kolor: '#e57373', nazwa_koloru: 'Różowy' }, { barwnik_id: 40, ph_min: 0.0, ph_max: 4.4, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 40, ph_min: 4.4, ph_max: 6.4, kolor: '#7b1fa2', nazwa_koloru: 'Fioletowy' }, { barwnik_id: 40, ph_min: 6.4, ph_max: 14.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 41, ph_min: 0.0, ph_max: 5.0, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 41, ph_min: 5.0, ph_max: 7.0, kolor: '#7b1fa2', nazwa_koloru: 'Fioletowy' }, { barwnik_id: 41, ph_min: 7.0, ph_max: 14.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 42, ph_min: 0.0, ph_max: 6.8, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 42, ph_min: 6.8, ph_max: 8.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 42, ph_min: 8.0, ph_max: 14.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 43, ph_min: 0.0, ph_max: 11.0, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 43, ph_min: 11.0, ph_max: 13.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 43, ph_min: 13.0, ph_max: 14.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 44, ph_min: 0.0, ph_max: 5.6, kolor: 'transparent', nazwa_koloru: 'Bezbarwny' }, { barwnik_id: 44, ph_min: 5.6, ph_max: 7.2, kolor: '#ffeb3b', nazwa_koloru: 'Żółty (fluorescencja)' }, { barwnik_id: 44, ph_min: 7.2, ph_max: 14.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty (fluorescencja)' }, { barwnik_id: 45, ph_min: 0.0, ph_max: 1.4, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 45, ph_min: 1.4, ph_max: 3.3, kolor: '#ffa000', nazwa_koloru: 'Pomarańczowy' }, { barwnik_id: 45, ph_min: 3.3, ph_max: 14.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 46, ph_min: 0.0, ph_max: 5.0, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 46, ph_min: 5.0, ph_max: 8.0, kolor: '#7b1fa2', nazwa_koloru: 'Fioletowy' }, { barwnik_id: 46, ph_min: 8.0, ph_max: 14.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 47, ph_min: 0.0, ph_max: 6.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty' }, { barwnik_id: 47, ph_min: 6.0, ph_max: 7.2, kolor: '#7b1fa2', nazwa_koloru: 'Fioletowy (szarawy)' }, { barwnik_id: 47, ph_min: 7.2, ph_max: 14.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 48, ph_min: 0.0, ph_max: 0.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski (I)' }, { barwnik_id: 48, ph_min: 0.0, ph_max: 1.0, kolor: '#ffeb3b', nazwa_koloru: 'Żółty (I)' }, { barwnik_id: 48, ph_min: 1.0, ph_max: 3.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski (II)' }, { barwnik_id: 48, ph_min: 3.0, ph_max: 14.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski (II)' }, { barwnik_id: 49, ph_min: 0.0, ph_max: 5.0, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 49, ph_min: 5.0, ph_max: 8.0, kolor: '#7b1fa2', nazwa_koloru: 'Fioletowy' }, { barwnik_id: 49, ph_min: 8.0, ph_max: 14.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 50, ph_min: 0.0, ph_max: 11.5, kolor: '#d32f2f', nazwa_koloru: 'Czerwony' }, { barwnik_id: 50, ph_min: 11.5, ph_max: 13.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski' }, { barwnik_id: 50, ph_min: 13.0, ph_max: 14.0, kolor: '#1976d2', nazwa_koloru: 'Niebieski' } ];
+        // --- START: TRANSLATION DATA ---
+        let currentLang = 'pl';
+
+        const translations = {
+            pageTitle: {
+                pl: 'UWI - Uniwersalny Wirtualny Indykator',
+                en: 'UVI - Universal Virtual Indicator',
+                fr: 'IVU - Indicateur Virtuel Universel',
+                ru: 'УВИ - Универсальный виртуальный индикатор'
+            },
+            mainHeader: {
+                pl: 'Uniwersalny Wirtualny Indykator',
+                en: 'Universal Virtual Indicator',
+                fr: 'Indicateur Virtuel Universel',
+                ru: 'Универсальный виртуальный индикатор'
+            },
+            indicatorLabel: {
+                pl: 'Wskaźnik',
+                en: 'Indicator',
+                fr: 'Indicateur',
+                ru: 'Индикатор'
+            },
+            solutionLabel: {
+                pl: 'Roztwór (Preset pH)',
+                en: 'Solution (pH Preset)',
+                fr: 'Solution (Préréglage pH)',
+                ru: 'Раствор (Пресет pH)'
+            },
+            selectIndicator: {
+                pl: '-- Wybierz wskaźnik --',
+                en: '-- Select Indicator --',
+                fr: '-- Choisir un Indicateur --',
+                ru: '-- Выберите индикатор --'
+            },
+            selectSolution: {
+                pl: '-- Wybierz roztwór --',
+                en: '-- Select Solution --',
+                fr: '-- Choisir une Solution --',
+                ru: '-- Выберите раствор --'
+            },
+            adjustPhLabel: {
+                pl: 'Dostosuj pH:',
+                en: 'Adjust pH:',
+                fr: 'Ajuster le pH :',
+                ru: 'Настроить pH:'
+            },
+            chooseIndicator: {
+                pl: 'Wybierz wskaźnik',
+                en: 'Select an indicator',
+                fr: 'Sélectionnez un indicateur',
+                ru: 'Выберите индикатор'
+            },
+            colorLabel: {
+                pl: 'Kolor:',
+                en: 'Color:',
+                fr: 'Couleur :',
+                ru: 'Цвет:'
+            },
+            phOutOfRange: {
+                pl: 'pH poza zakresem wskaźnika',
+                en: 'pH out of indicator range',
+                fr: 'pH hors de la plage de l\'indicateur',
+                ru: 'pH вне диапазона индикатора'
+            },
+            reactionLabel: {
+                pl: 'Odczyn:',
+                en: 'Reaction:',
+                fr: 'Réaction :',
+                ru: 'Реакция:'
+            },
+            acidic: {
+                pl: 'kwasowy',
+                en: 'acidic',
+                fr: 'acide',
+                ru: 'кислотная'
+            },
+            neutral: {
+                pl: 'obojętny',
+                en: 'neutral',
+                fr: 'neutre',
+                ru: 'нейтральная'
+            },
+            basic: {
+                pl: 'zasadowy',
+                en: 'basic',
+                fr: 'basique',
+                ru: 'щелочная'
+            },
+            addIndicatorHeader: {
+                pl: 'Dodaj Nowy Wskaźnik',
+                en: 'Add New Indicator',
+                fr: 'Ajouter un Nouvel Indicateur',
+                ru: 'Добавить новый индикатор'
+            },
+            indicatorNameLabel: {
+                pl: 'Nazwa Wskaźnika',
+                en: 'Indicator Name',
+                fr: 'Nom de l\'Indicateur',
+                ru: 'Название индикатора'
+            },
+            indicatorNamePlaceholder: {
+                pl: 'Np. Nowy Wskaźnik',
+                en: 'E.g. New Indicator',
+                fr: 'Ex. Nouvel Indicateur',
+                ru: 'Напр. Новый индикатор'
+            },
+            phRangesLabel: {
+                pl: 'Zakresy pH i Kolory',
+                en: 'pH Ranges and Colors',
+                fr: 'Plages de pH et Couleurs',
+                ru: 'Диапазоны pH и цвета'
+            },
+            addRangeBtn: {
+                pl: 'Dodaj Zakres',
+                en: 'Add Range',
+                fr: 'Ajouter une Plage',
+                ru: 'Добавить диапазон'
+            },
+            addIndicatorBtn: {
+                pl: 'Dodaj Wskaźnik',
+                en: 'Add Indicator',
+                fr: 'Ajouter l\'Indicateur',
+                ru: 'Добавить индикатор'
+            },
+            addSolutionHeader: {
+                pl: 'Dodaj Nowy Roztwór',
+                en: 'Add New Solution',
+                fr: 'Ajouter une Nouvelle Solution',
+                ru: 'Добавить новый раствор'
+            },
+            solutionNameLabel: {
+                pl: 'Nazwa Roztworu',
+                en: 'Solution Name',
+                fr: 'Nom de la Solution',
+                ru: 'Название раствора'
+            },
+            solutionNamePlaceholder: {
+                pl: 'Np. Woda z kranu',
+                en: 'E.g. Tap water',
+                fr: 'Ex. Eau du robinet',
+                ru: 'Напр. Водопроводная вода'
+            },
+            phValueLabel: {
+                pl: 'Wartość pH (0-14)',
+                en: 'pH Value (0-14)',
+                fr: 'Valeur du pH (0-14)',
+                ru: 'Значение pH (0-14)'
+            },
+            phValuePlaceholder: {
+                pl: 'Np. 7,2',
+                en: 'E.g. 7.2',
+                fr: 'Ex. 7,2',
+                ru: 'Напр. 7,2'
+            },
+            addSolutionBtn: {
+                pl: 'Dodaj Roztwór',
+                en: 'Add Solution',
+                fr: 'Ajouter la Solution',
+                ru: 'Добавить раствор'
+            },
+            clearDataBtn: {
+                pl: 'Wyczyść moje dane',
+                en: 'Clear my data',
+                fr: 'Effacer mes données',
+                ru: 'Очистить мои данные'
+            },
+            clearDataTooltip: {
+                pl: 'Usuwa wszystkie zapisane lokalnie wskaźniki i roztwory.',
+                en: 'Deletes all locally saved indicators and solutions.',
+                fr: 'Supprime tous les indicateurs et solutions sauvegardés localement.',
+                ru: 'Удаляет все локально сохраненные индикаторы и растворы.'
+            },
+            copyright: {
+                pl: '© Antoni Nowak 2025',
+                en: '© Antoni Nowak 2025',
+                fr: '© Antoni Nowak 2025',
+                ru: '© Антони Новак 2025'
+            },
+            // Dynamic messages
+            indicatorNameEmpty: {
+                pl: 'Nazwa wskaźnika nie może być pusta.',
+                en: 'Indicator name cannot be empty.',
+                fr: 'Le nom de l\'indicateur ne peut pas être vide.',
+                ru: 'Название индикатора не может быть пустым.'
+            },
+            indicatorExists: {
+                pl: 'Wskaźnik o tej nazwie już istnieje.',
+                en: 'An indicator with this name already exists.',
+                fr: 'Un indicateur avec ce nom existe déjà.',
+                ru: 'Индикатор с таким названием уже существует.'
+            },
+            atLeastOneRange: {
+                pl: 'Musisz zdefiniować co najmniej jeden zakres pH i kolor.',
+                en: 'You must define at least one pH range and color.',
+                fr: 'Vous devez définir au moins une plage de pH et une couleur.',
+                ru: 'Вы должны определить хотя бы один диапазон pH и цвет.'
+            },
+            invalidRangeFields: {
+                pl: 'Sprawdź, czy wszystkie pola w zakresach są poprawnie wypełnione.',
+                en: 'Check if all fields in the ranges are filled correctly.',
+                fr: 'Vérifiez si tous les champs dans les plages sont correctement remplis.',
+                ru: 'Проверьте, все ли поля в диапазонах заполнены правильно.'
+            },
+            indicatorAdded: {
+                pl: 'Dodano i zapisano wskaźnik: {name}.',
+                en: 'Added and saved indicator: {name}.',
+                fr: 'Indicateur ajouté et sauvegardé : {name}.',
+                ru: 'Индикатор добавлен и сохранен: {name}.'
+            },
+            solutionFieldsRequired: {
+                pl: 'Nazwa i pH roztworu są wymagane.',
+                en: 'Solution name and pH are required.',
+                fr: 'Le nom et le pH de la solution sont requis.',
+                ru: 'Требуется название и pH раствора.'
+            },
+            invalidPh: {
+                pl: 'Wprowadź poprawne pH (liczba od 0 do 14).',
+                en: 'Enter a valid pH (number from 0 to 14).',
+                fr: 'Entrez un pH valide (nombre de 0 à 14).',
+                ru: 'Введите правильный pH (число от 0 до 14).'
+            },
+            solutionAdded: {
+                pl: 'Dodano i zapisano roztwór: {name}.',
+                en: 'Added and saved solution: {name}.',
+                fr: 'Solution ajoutée et sauvegardée : {name}.',
+                ru: 'Раствор добавлен и сохранен: {name}.'
+            },
+            confirmReset: {
+                pl: 'Czy na pewno chcesz usunąć wszystkie swoje zapisane wskaźniki i roztwory? Tej operacji nie można cofnąć.',
+                en: 'Are you sure you want to delete all your saved indicators and solutions? This action cannot be undone.',
+                fr: 'Êtes-vous sûr de vouloir supprimer tous vos indicateurs et solutions sauvegardés ? Cette action est irréversible.',
+                ru: 'Вы уверены, что хотите удалить все сохраненные индикаторы и растворы? Это действие нельзя отменить.'
+            },
+            hoverColorCode: {
+                pl: 'Najedź, aby zobaczyć kod koloru CSS',
+                en: 'Hover to see CSS color code',
+                fr: 'Survolez pour voir le code couleur CSS',
+                ru: 'Наведите, чтобы увидеть код цвета CSS'
+            },
+            removeRangeBtn: {
+                pl: 'Usuń zakres',
+                en: 'Remove range',
+                fr: 'Supprimer la plage',
+                ru: 'Удалить диапазон'
+            }
+        };
+        // --- END: TRANSLATION DATA ---
+
+        // --- START: MULTILINGUAL DATA ---
+        const defaultBarwniki = [ { id: 1, nazwa: { pl: 'Fenoloftaleina', en: 'Phenolphthalein', fr: 'Phénolphtaléine', ru: 'Фенолфталеин' } }, { id: 2, nazwa: { pl: 'Oranż metylowy', en: 'Methyl orange', fr: 'Hélianthine', ru: 'Метилоранж' } }, { id: 3, nazwa: { pl: 'Lakmus (papierek)', en: 'Litmus (paper)', fr: 'Tournesol (papier)', ru: 'Лакмус (бумага)' } }, { id: 4, nazwa: { pl: 'Błękit tymolowy', en: 'Thymol blue', fr: 'Bleu de thymol', ru: 'Тимоловый синий' } }, { id: 5, nazwa: { pl: 'Czerwień metylowa', en: 'Methyl red', fr: 'Rouge de méthyle', ru: 'Метиловый красный' } }, { id: 6, nazwa: { pl: 'Błękit bromotymolowy', en: 'Bromothymol blue', fr: 'Bleu de bromothymol', ru: 'Бромтимоловый синий' } }, { id: 7, nazwa: { pl: 'Czerwień fenolowa', en: 'Phenol red', fr: 'Rouge de phénol', ru: 'Феноловый красный' } }, { id: 29, nazwa: { pl: 'Wyciąg z czerwonej kapusty', en: 'Red cabbage extract', fr: 'Extrait de chou rouge', ru: 'Экстракт красной капусты' } }, { id: 35, nazwa: { pl: 'Uniwersalny wskaźnik (roztwór)', en: 'Universal indicator (solution)', fr: 'Indicateur universel (solution)', ru: 'Универсальный индикатор (раствор)' } } /* Skrócona lista dla przykładu */ ];
+        const defaultRoztwory = [ { id: 1, nazwa: { pl: 'Kwas solny 1 M', en: 'Hydrochloric acid 1 M', fr: 'Acide chlorhydrique 1 M', ru: 'Соляная кислота 1 М' }, ph: 0.0 }, { id: 8, nazwa: { pl: 'Kwas octowy 0.1 M', en: 'Acetic acid 0.1 M', fr: 'Acide acétique 0.1 M', ru: 'Уксусная кислота 0.1 М' }, ph: 2.9 }, { id: 11, nazwa: { pl: 'Sok cytrynowy', en: 'Lemon juice', fr: 'Jus de citron', ru: 'Лимонный сок' }, ph: 2.4 }, { id: 22, nazwa: { pl: 'Woda destylowana (czysta)', en: 'Distilled water (pure)', fr: 'Eau distillée (pure)', ru: 'Дистиллированная вода (чистая)' }, ph: 7.0 }, { id: 24, nazwa: { pl: 'Krew ludzka', en: 'Human blood', fr: 'Sang humain', ru: 'Кровь человека' }, ph: 7.4 }, { id: 26, nazwa: { pl: 'Roztwór sody oczyszczonej', en: 'Baking soda solution', fr: 'Solution de bicarbonate de soude', ru: 'Раствор пищевой соды' }, ph: 8.3 }, { id: 31, nazwa: { pl: 'Amoniak (roztwór wodny 0.1 M)', en: 'Ammonia (0.1 M aqueous sol.)', fr: 'Ammoniaque (sol. aqueuse 0.1 M)', ru: 'Аммиак (водный раствор 0.1 М)' }, ph: 11.1 }, { id: 36, nazwa: { pl: 'Wodorotlenek sodu 1 M', en: 'Sodium hydroxide 1 M', fr: 'Hydroxyde de sodium 1 M', ru: 'Гидроксид натрия 1 М' }, ph: 14.0 } /* Skrócona lista dla przykładu */ ];
+        const defaultKolory = [ { barwnik_id: 1, ph_min: 0.0, ph_max: 8.2, kolor: 'transparent', nazwa_koloru: { pl: 'Bezbarwny', en: 'Colorless', fr: 'Incolore', ru: 'Бесцветный' } }, { barwnik_id: 1, ph_min: 8.2, ph_max: 10.0, kolor: '#FF80AB', nazwa_koloru: { pl: 'Malinowy (różowy)', en: 'Raspberry (pink)', fr: 'Framboise (rose)', ru: 'Малиновый (розовый)' } }, { barwnik_id: 1, ph_min: 10.0, ph_max: 14.0, kolor: '#D81B60', nazwa_koloru: { pl: 'Malinowy (intensywny)', en: 'Raspberry (intense)', fr: 'Framboise (intense)', ru: 'Малиновый (насыщенный)' } }, { barwnik_id: 2, ph_min: 0.0, ph_max: 3.1, kolor: '#d32f2f', nazwa_koloru: { pl: 'Czerwony', en: 'Red', fr: 'Rouge', ru: 'Красный' } }, { barwnik_id: 2, ph_min: 3.1, ph_max: 4.4, kolor: '#ffa000', nazwa_koloru: { pl: 'Pomarańczowy', en: 'Orange', fr: 'Orange', ru: 'Оранжевый' } }, { barwnik_id: 2, ph_min: 4.4, ph_max: 14.0, kolor: '#ffeb3b', nazwa_koloru: { pl: 'Żółty', en: 'Yellow', fr: 'Jaune', ru: 'Желтый' } }, { barwnik_id: 3, ph_min: 0.0, ph_max: 5.0, kolor: '#d32f2f', nazwa_koloru: { pl: 'Czerwony', en: 'Red', fr: 'Rouge', ru: 'Красный' } }, { barwnik_id: 3, ph_min: 5.0, ph_max: 8.0, kolor: '#7b1fa2', nazwa_koloru: { pl: 'Fioletowy', en: 'Violet', fr: 'Violet', ru: 'Фиолетовый' } }, { barwnik_id: 3, ph_min: 8.0, ph_max: 14.0, kolor: '#1976d2', nazwa_koloru: { pl: 'Niebieski', en: 'Blue', fr: 'Bleu', ru: 'Синий' } }, { barwnik_id: 35, ph_min: 0.0, ph_max: 3.0, kolor: '#d32f2f', nazwa_koloru: { pl: 'Czerwony', en: 'Red', fr: 'Rouge', ru: 'Красный' } }, { barwnik_id: 35, ph_min: 3.0, ph_max: 6.0, kolor: '#ffa000', nazwa_koloru: { pl: 'Pomarańczowy/Żółty', en: 'Orange/Yellow', fr: 'Orange/Jaune', ru: 'Оранжевый/Желтый' } }, { barwnik_id: 35, ph_min: 6.0, ph_max: 8.0, kolor: '#689f38', nazwa_koloru: { pl: 'Zielony', en: 'Green', fr: 'Vert', ru: 'Зеленый' } }, { barwnik_id: 35, ph_min: 8.0, ph_max: 11.0, kolor: '#1976d2', nazwa_koloru: { pl: 'Niebieski', en: 'Blue', fr: 'Bleu', ru: 'Синий' } }, { barwnik_id: 35, ph_min: 11.0, ph_max: 14.0, kolor: '#7b1fa2', nazwa_koloru: { pl: 'Fioletowy', en: 'Violet', fr: 'Violet', ru: 'Фиолетовый' } } /* Skrócona lista dla przykładu */ ];
+        // --- END: MULTILINGUAL DATA ---
 
         let barwniki = []; let roztwory = []; let kolory = [];
+
+        function setLanguage(lang) {
+            if (!translations.pageTitle[lang]) return; // Fallback if lang doesn't exist
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            localStorage.setItem('uwi_language', lang);
+
+            // Update static text from translations object
+            document.title = translations.pageTitle[lang];
+            document.querySelector('h1').innerHTML = `<i class="fas fa-vial"></i>UWI<i class="fas fa-prescription-bottle"></i><br> ${translations.mainHeader[lang]}`;
+            document.querySelector('label[for="barwnik-search"]').textContent = translations.indicatorLabel[lang];
+            document.querySelector('label[for="roztwor-search"]').textContent = translations.solutionLabel[lang];
+            document.querySelector('#barwnik-select .select-selected').textContent = translations.selectIndicator[lang];
+            document.querySelector('#roztwor-select .select-selected').textContent = translations.selectSolution[lang];
+            document.querySelector('#ph-slider-container label').firstChild.textContent = translations.adjustPhLabel[lang] + ' ';
+            document.querySelector('.form-container h2:nth-of-type(1)').innerHTML = `<i class="fas fa-vial"></i> ${translations.addIndicatorHeader[lang]}`;
+            document.getElementById('nazwa_barwnika').labels[0].textContent = translations.indicatorNameLabel[lang];
+            document.getElementById('nazwa_barwnika').placeholder = translations.indicatorNamePlaceholder[lang];
+            document.querySelector('#add-barwnik-form > label').textContent = translations.phRangesLabel[lang];
+            document.querySelector('.add-range-btn').innerHTML = `<i class="fas fa-plus-circle"></i> ${translations.addRangeBtn[lang]}`;
+            document.querySelector('#add-barwnik-form button[type="submit"]').innerHTML = `<i class="fas fa-plus"></i> ${translations.addIndicatorBtn[lang]}`;
+            document.querySelector('.form-container h2:nth-of-type(2)').innerHTML = `<i class="fas fa-prescription-bottle"></i> ${translations.addSolutionHeader[lang]}`;
+            document.getElementById('nazwa_roztworu').labels[0].textContent = translations.solutionNameLabel[lang];
+            document.getElementById('nazwa_roztworu').placeholder = translations.solutionNamePlaceholder[lang];
+            document.getElementById('ph_roztworu').labels[0].textContent = translations.phValueLabel[lang];
+            document.getElementById('ph_roztworu').placeholder = translations.phValuePlaceholder[lang];
+            document.querySelector('#add-roztwor-form button[type="submit"]').innerHTML = `<i class="fas fa-plus"></i> ${translations.addSolutionBtn[lang]}`;
+            document.getElementById('reset-data-btn').innerHTML = `<i class="fas fa-trash-alt"></i> ${translations.clearDataBtn[lang]}`;
+            document.getElementById('reset-data-btn').title = translations.clearDataTooltip[lang];
+            document.querySelector('.copyright').textContent = translations.copyright[lang];
+            document.getElementById('color-name').title = translations.hoverColorCode[lang];
+
+
+            // Update language switcher active state
+            document.querySelectorAll('#language-switcher img').forEach(img => {
+                img.classList.toggle('active', img.dataset.lang === lang);
+            });
+
+            // Repopulate dynamic content
+            populateDropdowns();
+            updateDisplay();
+        }
 
         function loadData() {
             barwniki = JSON.parse(JSON.stringify(defaultBarwniki));
@@ -169,16 +468,27 @@
             const colorNameEl = document.getElementById('color-name');
             const solutionNatureEl = document.getElementById('solution-nature');
             const phSliderContainer = document.getElementById('ph-slider-container');
+            const localeSeparator = (currentLang === 'en') ? '.' : ',';
+            
             [colorNameEl, solutionNatureEl].forEach(el => { el.style.animation = 'none'; el.offsetHeight; el.style.animation = null; });
             colorNameEl.removeAttribute('data-color-code'); colorNameEl.removeAttribute('data-base-text');
-            if (!barwnikIdValue) { phSliderContainer.classList.remove('visible'); circle.style.backgroundColor = 'rgba(255,255,255,0.1)'; circle.style.borderColor = 'var(--border-color)'; circle.classList.remove('colored'); colorNameEl.textContent = 'Wybierz wskaźnik'; solutionNatureEl.textContent = ''; return; }
+            if (!barwnikIdValue) { phSliderContainer.classList.remove('visible'); circle.style.backgroundColor = 'rgba(255,255,255,0.1)'; circle.style.borderColor = 'var(--border-color)'; circle.classList.remove('colored'); colorNameEl.textContent = translations.chooseIndicator[currentLang]; solutionNatureEl.textContent = ''; return; }
             phSliderContainer.classList.add('visible');
             const barwnikId = parseInt(barwnikIdValue); const roztworPh = parseFloat(roztworPhValue);
             if (isNaN(roztworPh)) { circle.style.backgroundColor = 'rgba(255,255,255,0.1)'; circle.style.borderColor = 'var(--border-color)'; circle.classList.remove('colored'); colorNameEl.textContent = 'Błędna wartość pH'; solutionNatureEl.textContent = ''; return; }
             const colorData = kolory.find(k => k.barwnik_id === barwnikId && roztworPh >= k.ph_min && roztworPh < k.ph_max); let finalColorData = colorData; if (!finalColorData) { const lastRange = kolory.filter(k => k.barwnik_id === barwnikId).sort((a, b) => b.ph_max - a.ph_max)[0]; if (lastRange && roztworPh >= lastRange.ph_min && roztworPh <= lastRange.ph_max) { finalColorData = lastRange; } }
-            let odczyn = roztworPh < 7 ? 'kwasowy' : (roztworPh > 7 ? 'zasadowy' : 'obojętny');
-            document.getElementById('slider-ph-value').textContent = roztworPh.toFixed(1).replace('.', ','); solutionNatureEl.innerHTML = `Odczyn: ${odczyn} <span>pH ${roztworPh.toFixed(2).replace('.', ',')}</span>`;
-            if (finalColorData) { circle.style.backgroundColor = finalColorData.kolor === 'transparent' ? '#ffffff' : finalColorData.kolor; circle.style.borderColor = 'transparent'; circle.classList.add('colored'); const baseText = `Kolor: ${finalColorData.nazwa_koloru}`; colorNameEl.textContent = baseText; colorNameEl.dataset.baseText = baseText; colorNameEl.dataset.colorCode = finalColorData.kolor; } else { circle.style.backgroundColor = '#e9ecef'; circle.style.borderColor = 'var(--border-color)'; circle.classList.remove('colored'); colorNameEl.textContent = 'Kolor: pH poza zakresem wskaźnika'; }
+            let odczynKey = roztworPh < 6.99 ? 'acidic' : (roztworPh > 7.01 ? 'basic' : 'neutral');
+            let odczyn = translations[odczynKey][currentLang];
+            document.getElementById('slider-ph-value').textContent = roztworPh.toFixed(1).replace('.', localeSeparator); 
+            solutionNatureEl.innerHTML = `${translations.reactionLabel[currentLang]} ${odczyn} <span>pH ${roztworPh.toFixed(2).replace('.', localeSeparator)}</span>`;
+            if (finalColorData) { 
+                circle.style.backgroundColor = finalColorData.kolor === 'transparent' ? '#ffffff' : finalColorData.kolor; 
+                circle.style.borderColor = 'transparent'; circle.classList.add('colored'); 
+                const colorName = typeof finalColorData.nazwa_koloru === 'object' ? finalColorData.nazwa_koloru[currentLang] : finalColorData.nazwa_koloru;
+                const baseText = `${translations.colorLabel[currentLang]} ${colorName}`; 
+                colorNameEl.textContent = baseText; 
+                colorNameEl.dataset.baseText = baseText; colorNameEl.dataset.colorCode = finalColorData.kolor; 
+            } else { circle.style.backgroundColor = '#e9ecef'; circle.style.borderColor = 'var(--border-color)'; circle.classList.remove('colored'); colorNameEl.textContent = `${translations.colorLabel[currentLang]} ${translations.phOutOfRange[currentLang]}`; }
             colorNameEl.style.animation = `fadeInSlideUp var(--animation-speed-slow) ease-out 0.1s forwards`; solutionNatureEl.style.animation = `fadeInSlideUp var(--animation-speed-slow) ease-out 0.2s forwards`;
         }
 
@@ -187,6 +497,9 @@
             const selected = container.querySelector('.select-selected');
             const optionsContainer = container.querySelector('.options-container');
             
+            selected.textContent = placeholder; // Update placeholder text on language change
+            selected.dataset.value = '';
+
             optionsContainer.innerHTML = '';
             items.forEach(item => {
                 const optionDiv = document.createElement('div');
@@ -203,26 +516,43 @@
         }
         
         function populateDropdowns() {
-            barwniki.sort((a, b) => a.nazwa.localeCompare(b.nazwa, 'pl'));
-            roztwory.sort((a, b) => a.nazwa.localeCompare(b.nazwa, 'pl'));
+            const localeSeparator = (currentLang === 'en') ? '.' : ',';
+            
+            barwniki.sort((a, b) => {
+                const nameA = typeof a.nazwa === 'object' ? a.nazwa[currentLang] : a.nazwa;
+                const nameB = typeof b.nazwa === 'object' ? b.nazwa[currentLang] : b.nazwa;
+                return nameA.localeCompare(nameB, currentLang);
+            });
+            roztwory.sort((a, b) => {
+                const nameA = typeof a.nazwa === 'object' ? a.nazwa[currentLang] : a.nazwa;
+                const nameB = typeof b.nazwa === 'object' ? b.nazwa[currentLang] : b.nazwa;
+                return nameA.localeCompare(nameB, currentLang);
+            });
+
             const phSlider = document.getElementById('ph-slider');
             const roztworSelected = document.querySelector('#roztwor-select .select-selected');
             
-            const barwnikiItems = barwniki.map(b => ({ text: b.nazwa, value: b.id }));
-            setupCustomSelect('barwnik-select', barwnikiItems, '-- Wybierz wskaźnik --', (value, text) => {
+            const barwnikiItems = barwniki.map(b => ({ 
+                text: typeof b.nazwa === 'object' ? b.nazwa[currentLang] : b.nazwa, 
+                value: b.id 
+            }));
+            setupCustomSelect('barwnik-select', barwnikiItems, translations.selectIndicator[currentLang], (value, text) => {
                 if (!roztworSelected.dataset.value) phSlider.value = 7.0;
                 updateDisplay();
             });
 
-            const roztworyItems = roztwory.map(r => ({ text: `${r.nazwa} (pH ${r.ph.toFixed(2).replace('.', ',')})`, value: r.ph }));
-            setupCustomSelect('roztwor-select', roztworyItems, '-- Wybierz roztwór --', (value, text) => {
+            const roztworyItems = roztwory.map(r => ({ 
+                text: `${typeof r.nazwa === 'object' ? r.nazwa[currentLang] : r.nazwa} (pH ${r.ph.toFixed(2).replace('.', localeSeparator)})`, 
+                value: r.ph 
+            }));
+            setupCustomSelect('roztwor-select', roztworyItems, translations.selectSolution[currentLang], (value, text) => {
                 phSlider.value = value;
                 updateDisplay();
             });
         }
         
-        function handleAddBarwnik(event) { event.preventDefault(); const nazwaInput = document.getElementById('nazwa_barwnika'); const nazwa = nazwaInput.value.trim(); const messageElId = 'barwnik-message'; const rangeGroups = document.querySelectorAll('#indicator-ranges-container .indicator-range-group'); if (!nazwa) { showMessage(messageElId, 'Nazwa wskaźnika nie może być pusta.', false); return; } if (barwniki.some(b => b.nazwa.toLowerCase() === nazwa.toLowerCase())) { showMessage(messageElId, 'Wskaźnik o tej nazwie już istnieje.', false); return; } if (rangeGroups.length === 0) { showMessage(messageElId, 'Musisz zdefiniować co najmniej jeden zakres pH i kolor.', false); return; } const newId = getNextBarwnikId(); const newIndicatorRanges = []; let validationPassed = true; rangeGroups.forEach((group, index) => { const phMin = parseFloat(group.querySelector('.range-ph-min').value.replace(',', '.')); const phMax = parseFloat(group.querySelector('.range-ph-max').value.replace(',', '.')); const colorName = group.querySelector('.range-color-name').value.trim(); const colorCss = group.querySelector('.range-color-css').value.trim(); if (isNaN(phMin) || isNaN(phMax) || phMin < 0 || phMax > 14 || phMin >= phMax || !colorName || !colorCss) { validationPassed = false; } else { newIndicatorRanges.push({ barwnik_id: newId, ph_min: phMin, ph_max: phMax, kolor: colorCss, nazwa_koloru: colorName }); } }); if (!validationPassed) { showMessage(messageElId, 'Sprawdź, czy wszystkie pola w zakresach są poprawnie wypełnione.', false); return; } const newBarwnik = { id: newId, nazwa: nazwa }; barwniki.push(newBarwnik); kolory.push(...newIndicatorRanges); let customBarwniki = JSON.parse(localStorage.getItem('uwi_custom_barwniki')) || []; let customKolory = JSON.parse(localStorage.getItem('uwi_custom_kolory')) || []; customBarwniki.push(newBarwnik); customKolory.push(...newIndicatorRanges); localStorage.setItem('uwi_custom_barwniki', JSON.stringify(customBarwniki)); localStorage.setItem('uwi_custom_kolory', JSON.stringify(customKolory)); populateDropdowns(); const barwnikSelected = document.querySelector('#barwnik-select .select-selected'); barwnikSelected.textContent = newBarwnik.nazwa; barwnikSelected.dataset.value = newBarwnik.id; nazwaInput.value = ''; clearIndicatorFormRanges(); showMessage(messageElId, `Dodano i zapisano wskaźnik: ${nazwa}.`, true); updateDisplay(); }
-        function handleAddRoztwor(event) { event.preventDefault(); const nazwaInput = document.getElementById('nazwa_roztworu'); const phInput = document.getElementById('ph_roztworu'); const messageElId = 'roztwor-message'; const nazwa = nazwaInput.value.trim(); const phValue = phInput.value.trim().replace(',', '.'); if (!nazwa || !phValue) { showMessage(messageElId, 'Nazwa i pH roztworu są wymagane.', false); return; } const ph = parseFloat(phValue); if (isNaN(ph) || ph < 0 || ph > 14) { showMessage(messageElId, 'Wprowadź poprawne pH (liczba od 0 do 14, użyj przecinka).', false); return; } const newId = getNextRoztworId(); const newRoztwor = { id: newId, nazwa: nazwa, ph: ph }; roztwory.push(newRoztwor); let customRoztwory = JSON.parse(localStorage.getItem('uwi_custom_roztwory')) || []; customRoztwory.push(newRoztwor); localStorage.setItem('uwi_custom_roztwory', JSON.stringify(customRoztwory)); populateDropdowns(); const roztworSelected = document.querySelector('#roztwor-select .select-selected'); roztworSelected.textContent = `${newRoztwor.nazwa} (pH ${newRoztwor.ph.toFixed(2).replace('.', ',')})`; roztworSelected.dataset.value = newRoztwor.ph; document.getElementById('ph-slider').value = ph; nazwaInput.value = ''; phInput.value = ''; showMessage(messageElId, `Dodano i zapisano roztwór: ${nazwa}.`, true); updateDisplay(); }
+        function handleAddBarwnik(event) { event.preventDefault(); const nazwaInput = document.getElementById('nazwa_barwnika'); const nazwa = nazwaInput.value.trim(); const messageElId = 'barwnik-message'; const rangeGroups = document.querySelectorAll('#indicator-ranges-container .indicator-range-group'); if (!nazwa) { showMessage(messageElId, translations.indicatorNameEmpty[currentLang], false); return; } if (barwniki.some(b => (typeof b.nazwa === 'object' ? b.nazwa.pl.toLowerCase() : b.nazwa.toLowerCase()) === nazwa.toLowerCase())) { showMessage(messageElId, translations.indicatorExists[currentLang], false); return; } if (rangeGroups.length === 0) { showMessage(messageElId, translations.atLeastOneRange[currentLang], false); return; } const newId = getNextBarwnikId(); const newIndicatorRanges = []; let validationPassed = true; rangeGroups.forEach((group, index) => { const phMin = parseFloat(group.querySelector('.range-ph-min').value.replace(',', '.')); const phMax = parseFloat(group.querySelector('.range-ph-max').value.replace(',', '.')); const colorName = group.querySelector('.range-color-name').value.trim(); const colorCss = group.querySelector('.range-color-css').value.trim(); if (isNaN(phMin) || isNaN(phMax) || phMin < 0 || phMax > 14 || phMin >= phMax || !colorName || !colorCss) { validationPassed = false; } else { newIndicatorRanges.push({ barwnik_id: newId, ph_min: phMin, ph_max: phMax, kolor: colorCss, nazwa_koloru: colorName }); } }); if (!validationPassed) { showMessage(messageElId, translations.invalidRangeFields[currentLang], false); return; } const newBarwnik = { id: newId, nazwa: nazwa }; barwniki.push(newBarwnik); kolory.push(...newIndicatorRanges); let customBarwniki = JSON.parse(localStorage.getItem('uwi_custom_barwniki')) || []; let customKolory = JSON.parse(localStorage.getItem('uwi_custom_kolory')) || []; customBarwniki.push(newBarwnik); customKolory.push(...newIndicatorRanges); localStorage.setItem('uwi_custom_barwniki', JSON.stringify(customBarwniki)); localStorage.setItem('uwi_custom_kolory', JSON.stringify(customKolory)); populateDropdowns(); const barwnikSelected = document.querySelector('#barwnik-select .select-selected'); barwnikSelected.textContent = newBarwnik.nazwa; barwnikSelected.dataset.value = newBarwnik.id; nazwaInput.value = ''; clearIndicatorFormRanges(); showMessage(messageElId, translations.indicatorAdded[currentLang].replace('{name}', nazwa), true); updateDisplay(); }
+        function handleAddRoztwor(event) { event.preventDefault(); const nazwaInput = document.getElementById('nazwa_roztworu'); const phInput = document.getElementById('ph_roztworu'); const messageElId = 'roztwor-message'; const nazwa = nazwaInput.value.trim(); const phValue = phInput.value.trim().replace(',', '.'); if (!nazwa || !phValue) { showMessage(messageElId, translations.solutionFieldsRequired[currentLang], false); return; } const ph = parseFloat(phValue); if (isNaN(ph) || ph < 0 || ph > 14) { showMessage(messageElId, translations.invalidPh[currentLang], false); return; } const newId = getNextRoztworId(); const newRoztwor = { id: newId, nazwa: nazwa, ph: ph }; roztwory.push(newRoztwor); let customRoztwory = JSON.parse(localStorage.getItem('uwi_custom_roztwory')) || []; customRoztwory.push(newRoztwor); localStorage.setItem('uwi_custom_roztwory', JSON.stringify(customRoztwory)); populateDropdowns(); const roztworSelected = document.querySelector('#roztwor-select .select-selected'); const localeSeparator = (currentLang === 'en') ? '.' : ','; roztworSelected.textContent = `${newRoztwor.nazwa} (pH ${newRoztwor.ph.toFixed(2).replace('.', localeSeparator)})`; roztworSelected.dataset.value = newRoztwor.ph; document.getElementById('ph-slider').value = ph; nazwaInput.value = ''; phInput.value = ''; showMessage(messageElId, translations.solutionAdded[currentLang].replace('{name}', nazwa), true); updateDisplay(); }
 
         function clearIndicatorFormRanges() { 
             document.getElementById('indicator-ranges-container').innerHTML = '';
@@ -231,12 +561,22 @@
         window.onload = () => {
             document.body.classList.add('loaded');
             loadData();
-            populateDropdowns();
+
+            // Setup language switcher
+            const savedLang = localStorage.getItem('uwi_language') || 'pl';
+            setLanguage(savedLang);
+
+            document.querySelectorAll('#language-switcher img').forEach(img => {
+                img.addEventListener('click', function() {
+                    setLanguage(this.dataset.lang);
+                });
+            });
+
 
             const phSlider = document.getElementById('ph-slider');
             phSlider.addEventListener('input', () => {
                 const roztworSelected = document.querySelector('#roztwor-select .select-selected');
-                roztworSelected.textContent = '-- Wybierz roztwór --';
+                roztworSelected.textContent = translations.selectSolution[currentLang];
                 roztworSelected.dataset.value = '';
                 updateDisplay();
             });
@@ -253,7 +593,7 @@
             document.addEventListener('click', closeAllSelect);
             
             document.getElementById('reset-data-btn').addEventListener('click', () => {
-                if (confirm('Czy na pewno chcesz usunąć wszystkie swoje zapisane wskaźniki i roztwory? Tej operacji nie można cofnąć.')) {
+                if (confirm(translations.confirmReset[currentLang])) {
                     localStorage.removeItem('uwi_custom_roztwory');
                     localStorage.removeItem('uwi_custom_barwniki');
                     localStorage.removeItem('uwi_custom_kolory');
@@ -264,25 +604,18 @@
             document.getElementById('add-barwnik-form').addEventListener('submit', handleAddBarwnik); 
             document.getElementById('add-roztwor-form').addEventListener('submit', handleAddRoztwor);
             
-            updateDisplay();
+            // initial call to set text correctly based on language
+            updateDisplay(); 
         };
 
         function closeAllSelect(elmnt) {
             let x = document.getElementsByClassName("select-items");
             let y = document.getElementsByClassName("select-selected");
             for (let i = 0; i < y.length; i++) {
-                if (elmnt == y[i]) {
-                    
-                } else {
-                    y[i].classList.remove("select-arrow-active");
-                }
+                if (elmnt == y[i]) { } else { y[i].classList.remove("select-arrow-active"); }
             }
             for (let i = 0; i < x.length; i++) {
-                if (elmnt && elmnt.nextElementSibling == x[i]) {
-                    
-                } else {
-                    x[i].classList.add("select-hide");
-                }
+                if (elmnt && elmnt.nextElementSibling == x[i]) { } else { x[i].classList.add("select-hide"); }
             }
         }
     </script>
@@ -291,6 +624,14 @@
     <div id="preloader"><div class="spinner"></div></div>
 
     <div class="container">
+        <!-- Language Switcher -->
+        <div id="language-switcher">
+            <img src="https://flagcdn.com/w40/pl.png" data-lang="pl" alt="Polski" title="Polski">
+            <img src="https://flagcdn.com/w40/gb.png" data-lang="en" alt="English" title="English">
+            <img src="https://flagcdn.com/w40/fr.png" data-lang="fr" alt="Français" title="Français">
+            <img src="https://flagcdn.com/w40/ru.png" data-lang="ru" alt="Русский" title="Русский">
+        </div>
+        
         <h1><i class="fas fa-vial"></i>UWI<i class="fas fa-prescription-bottle"></i><br> Uniwersalny Wirtualny Indykator <br> </h1>
 
         <div class="controls">
