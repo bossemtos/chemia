@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Tytuł będzie ustawiany dynamicznie przez JS -->
     <title>UWI - Uniwersalny Wirtualny Indykator</title>
     <link rel="icon" type="image/x-icon" href="logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -142,7 +141,6 @@
         .copyright { text-align: center; margin-top: 50px; font-size: 0.9em; color: rgba(255, 255, 255, 0.6); padding-bottom: 20px; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); opacity: 0; animation: fadeInSlideUp 1.2s ease-out 1.5s forwards; }
     </style>
     <script>
-        // --- START: TRANSLATION DATA ---
         let currentLang = 'pl';
 
         const translations = {
@@ -388,23 +386,21 @@
                 ru: 'Удалить диапазон'
             }
         };
-        // --- END: TRANSLATION DATA ---
 
-        // --- START: MULTILINGUAL DATA ---
         const defaultBarwniki = [ { id: 1, nazwa: { pl: 'Fenoloftaleina', en: 'Phenolphthalein', fr: 'Phénolphtaléine', ru: 'Фенолфталеин' } }, { id: 2, nazwa: { pl: 'Oranż metylowy', en: 'Methyl orange', fr: 'Hélianthine', ru: 'Метилоранж' } }, { id: 3, nazwa: { pl: 'Lakmus (papierek)', en: 'Litmus (paper)', fr: 'Tournesol (papier)', ru: 'Лакмус (бумага)' } }, { id: 4, nazwa: { pl: 'Błękit tymolowy', en: 'Thymol blue', fr: 'Bleu de thymol', ru: 'Тимоловый синий' } }, { id: 5, nazwa: { pl: 'Czerwień metylowa', en: 'Methyl red', fr: 'Rouge de méthyle', ru: 'Метиловый красный' } }, { id: 6, nazwa: { pl: 'Błękit bromotymolowy', en: 'Bromothymol blue', fr: 'Bleu de bromothymol', ru: 'Бромтимоловый синий' } }, { id: 7, nazwa: { pl: 'Czerwień fenolowa', en: 'Phenol red', fr: 'Rouge de phénol', ru: 'Феноловый красный' } }, { id: 29, nazwa: { pl: 'Wyciąg z czerwonej kapusty', en: 'Red cabbage extract', fr: 'Extrait de chou rouge', ru: 'Экстракт красной капусты' } }, { id: 35, nazwa: { pl: 'Uniwersalny wskaźnik (roztwór)', en: 'Universal indicator (solution)', fr: 'Indicateur universel (solution)', ru: 'Универсальный индикатор (раствор)' } } /* Skrócona lista dla przykładu */ ];
         const defaultRoztwory = [ { id: 1, nazwa: { pl: 'Kwas solny 1 M', en: 'Hydrochloric acid 1 M', fr: 'Acide chlorhydrique 1 M', ru: 'Соляная кислота 1 М' }, ph: 0.0 }, { id: 8, nazwa: { pl: 'Kwas octowy 0.1 M', en: 'Acetic acid 0.1 M', fr: 'Acide acétique 0.1 M', ru: 'Уксусная кислота 0.1 М' }, ph: 2.9 }, { id: 11, nazwa: { pl: 'Sok cytrynowy', en: 'Lemon juice', fr: 'Jus de citron', ru: 'Лимонный сок' }, ph: 2.4 }, { id: 22, nazwa: { pl: 'Woda destylowana (czysta)', en: 'Distilled water (pure)', fr: 'Eau distillée (pure)', ru: 'Дистиллированная вода (чистая)' }, ph: 7.0 }, { id: 24, nazwa: { pl: 'Krew ludzka', en: 'Human blood', fr: 'Sang humain', ru: 'Кровь человека' }, ph: 7.4 }, { id: 26, nazwa: { pl: 'Roztwór sody oczyszczonej', en: 'Baking soda solution', fr: 'Solution de bicarbonate de soude', ru: 'Раствор пищевой соды' }, ph: 8.3 }, { id: 31, nazwa: { pl: 'Amoniak (roztwór wodny 0.1 M)', en: 'Ammonia (0.1 M aqueous sol.)', fr: 'Ammoniaque (sol. aqueuse 0.1 M)', ru: 'Аммиак (водный раствор 0.1 М)' }, ph: 11.1 }, { id: 36, nazwa: { pl: 'Wodorotlenek sodu 1 M', en: 'Sodium hydroxide 1 M', fr: 'Hydroxyde de sodium 1 M', ru: 'Гидроксид натрия 1 М' }, ph: 14.0 } /* Skrócona lista dla przykładu */ ];
         const defaultKolory = [ { barwnik_id: 1, ph_min: 0.0, ph_max: 8.2, kolor: 'transparent', nazwa_koloru: { pl: 'Bezbarwny', en: 'Colorless', fr: 'Incolore', ru: 'Бесцветный' } }, { barwnik_id: 1, ph_min: 8.2, ph_max: 10.0, kolor: '#FF80AB', nazwa_koloru: { pl: 'Malinowy (różowy)', en: 'Raspberry (pink)', fr: 'Framboise (rose)', ru: 'Малиновый (розовый)' } }, { barwnik_id: 1, ph_min: 10.0, ph_max: 14.0, kolor: '#D81B60', nazwa_koloru: { pl: 'Malinowy (intensywny)', en: 'Raspberry (intense)', fr: 'Framboise (intense)', ru: 'Малиновый (насыщенный)' } }, { barwnik_id: 2, ph_min: 0.0, ph_max: 3.1, kolor: '#d32f2f', nazwa_koloru: { pl: 'Czerwony', en: 'Red', fr: 'Rouge', ru: 'Красный' } }, { barwnik_id: 2, ph_min: 3.1, ph_max: 4.4, kolor: '#ffa000', nazwa_koloru: { pl: 'Pomarańczowy', en: 'Orange', fr: 'Orange', ru: 'Оранжевый' } }, { barwnik_id: 2, ph_min: 4.4, ph_max: 14.0, kolor: '#ffeb3b', nazwa_koloru: { pl: 'Żółty', en: 'Yellow', fr: 'Jaune', ru: 'Желтый' } }, { barwnik_id: 3, ph_min: 0.0, ph_max: 5.0, kolor: '#d32f2f', nazwa_koloru: { pl: 'Czerwony', en: 'Red', fr: 'Rouge', ru: 'Красный' } }, { barwnik_id: 3, ph_min: 5.0, ph_max: 8.0, kolor: '#7b1fa2', nazwa_koloru: { pl: 'Fioletowy', en: 'Violet', fr: 'Violet', ru: 'Фиолетовый' } }, { barwnik_id: 3, ph_min: 8.0, ph_max: 14.0, kolor: '#1976d2', nazwa_koloru: { pl: 'Niebieski', en: 'Blue', fr: 'Bleu', ru: 'Синий' } }, { barwnik_id: 35, ph_min: 0.0, ph_max: 3.0, kolor: '#d32f2f', nazwa_koloru: { pl: 'Czerwony', en: 'Red', fr: 'Rouge', ru: 'Красный' } }, { barwnik_id: 35, ph_min: 3.0, ph_max: 6.0, kolor: '#ffa000', nazwa_koloru: { pl: 'Pomarańczowy/Żółty', en: 'Orange/Yellow', fr: 'Orange/Jaune', ru: 'Оранжевый/Желтый' } }, { barwnik_id: 35, ph_min: 6.0, ph_max: 8.0, kolor: '#689f38', nazwa_koloru: { pl: 'Zielony', en: 'Green', fr: 'Vert', ru: 'Зеленый' } }, { barwnik_id: 35, ph_min: 8.0, ph_max: 11.0, kolor: '#1976d2', nazwa_koloru: { pl: 'Niebieski', en: 'Blue', fr: 'Bleu', ru: 'Синий' } }, { barwnik_id: 35, ph_min: 11.0, ph_max: 14.0, kolor: '#7b1fa2', nazwa_koloru: { pl: 'Fioletowy', en: 'Violet', fr: 'Violet', ru: 'Фиолетовый' } } /* Skrócona lista dla przykładu */ ];
-        // --- END: MULTILINGUAL DATA ---
+
 
         let barwniki = []; let roztwory = []; let kolory = [];
 
         function setLanguage(lang) {
-            if (!translations.pageTitle[lang]) return; // Fallback if lang doesn't exist
+            if (!translations.pageTitle[lang]) return;
             currentLang = lang;
             document.documentElement.lang = lang;
             localStorage.setItem('uwi_language', lang);
 
-            // Update static text from translations object
+
             document.title = translations.pageTitle[lang];
             document.querySelector('h1').innerHTML = `<i class="fas fa-vial"></i>UWI<i class="fas fa-prescription-bottle"></i><br> ${translations.mainHeader[lang]}`;
             document.querySelector('label[for="barwnik-search"]').textContent = translations.indicatorLabel[lang];
@@ -430,12 +426,12 @@
             document.getElementById('color-name').title = translations.hoverColorCode[lang];
 
 
-            // Update language switcher active state
+
             document.querySelectorAll('#language-switcher img').forEach(img => {
                 img.classList.toggle('active', img.dataset.lang === lang);
             });
 
-            // Repopulate dynamic content
+
             populateDropdowns();
             updateDisplay();
         }
@@ -497,7 +493,7 @@
             const selected = container.querySelector('.select-selected');
             const optionsContainer = container.querySelector('.options-container');
             
-            selected.textContent = placeholder; // Update placeholder text on language change
+            selected.textContent = placeholder; 
             selected.dataset.value = '';
 
             optionsContainer.innerHTML = '';
@@ -603,8 +599,7 @@
 
             document.getElementById('add-barwnik-form').addEventListener('submit', handleAddBarwnik); 
             document.getElementById('add-roztwor-form').addEventListener('submit', handleAddRoztwor);
-            
-            // initial call to set text correctly based on language
+
             updateDisplay(); 
         };
 
@@ -624,7 +619,6 @@
     <div id="preloader"><div class="spinner"></div></div>
 
     <div class="container">
-        <!-- Language Switcher -->
         <div id="language-switcher">
             <img src="https://flagcdn.com/w40/pl.png" data-lang="pl" alt="Polski" title="Polski">
             <img src="https://flagcdn.com/w40/gb.png" data-lang="en" alt="English" title="English">
